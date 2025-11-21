@@ -6,7 +6,8 @@ services:
     restart: unless-stopped
 
     ports:
-      - '3001:3001'
+      - '3001:3000'
+      - '3003:3003'
 
     networks:
       - docker-network

@@ -249,6 +249,16 @@ Scheme: http
 Forward Hostname / IP: cryptpad
 Forward Port: 3001
 SSL Certificate (SSL tab): request a new certificate
+WebSockets Support: enable
+```
+
+And add a custom location for WebSockets:
+```
+Location: /cryptpad_websocket
+Scheme: http
+Forward Hostname / IP: cryptpad
+Forward Port: 3003
+WebSockets Support: enable
 ```
 
 Then launch the docker:
