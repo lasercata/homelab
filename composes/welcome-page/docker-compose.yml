@@ -1,0 +1,13 @@
+services:
+  welcome-page:
+    image: httpd:latest
+    container_name: welcome-page
+    restart: unless-stopped
+    networks:
+      - docker-network
+    volumes:
+      - ./html:/usr/local/apache2/htdocs/
+
+networks:
+  docker-network:
+    external: true
