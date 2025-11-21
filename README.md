@@ -218,3 +218,8 @@ Then launch the docker:
 ```
 docker compose up -d
 ```
+
+To configure the instance, go to the file `/data/gitea/conf/app.ini` in the docker:
+```
+docker exec -it forgejo bash
+```
