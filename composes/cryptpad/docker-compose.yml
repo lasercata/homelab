@@ -1,0 +1,29 @@
+services:
+  server:
+    image: cryptpad/cryptpad:latest
+    container_name: cryptpad
+
+    restart: unless-stopped
+
+    ports:
+      - '3001:3001'
+
+    networks:
+      - docker-network
+
+    environment:
+      - CPAD_MAIN_DOMAIN=https://cryptpad.lasercata.com
+      - CPAD_SANDBOX_DOMAIN=https://sandbox.cryptpad.lasercata.com
+      - CPAD_CONF=/cryptpad/config/config.js
+
+    volumes:
+      - /srv/docker/volumes/cryptpad/data/blob:/cryptpad/blob
+      - /srv/docker/volumes/cryptpad/data/block:/cryptpad/block
+      - /srv/docker/volumes/cryptpad/customize:/cryptpad/customize
+      - /srv/docker/volumes/cryptpad/data/data:/cryptpad/data
+      - /srv/docker/volumes/cryptpad/data/files:/cryptpad/datastore
+
+networks:
+  docker-network:
+    external: true
+

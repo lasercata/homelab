@@ -108,18 +108,34 @@ Here is the general file structure:
             └── service_n/
 ```
 
-To create it and set the permissions:
-```
-sudo mkdir -p /srv/docker/composes
-sudo mkdir /srv/docker/volumes
-sudo mkdir /srv/docker/logs
+<!-- To create it and set the permissions: -->
+<!-- ``` -->
+<!-- sudo mkdir -p /srv/docker/composes -->
+<!-- sudo mkdir /srv/docker/volumes -->
+<!-- sudo mkdir /srv/docker/logs -->
+<!---->
+<!-- sudo chown -hR admin:admin /srv/docker -->
+<!-- ``` -->
 
-sudo chown -hR admin:admin /srv/docker
+### Download all config (docker)
+Create the `/srv/docker/` folder and set the right owner:
+```
+sudo mkdir /srv/docker/
+sudo chown admin:admin /srv/docker
+```
+
+And then clone this very repository into `docker`:
+```
+cd /srv/
+git clone ssh://git@codeberg.org/lasercata/VPS.git docker
+```
+
+And create the missing folders:
+```
+mkdir docker/volumes docker/logs
 ```
 
 ### Nginx proxy manager
-Copy the [`docker-compose.yml`](composes/nginx-proxy-manager/docker-compose.yml) file to `/srv/docker/composes/nginx-proxy-manager/`.
-
 Create a docker network:
 ```
 docker network create docker-network
@@ -151,7 +167,6 @@ After this wait a bit for `npm.domain.tld` is accessible.
 You can now remove the firewall rule allowing the port 81.
 
 ### Welcome page
-Copy the [`welcome-page`](composes/welcome-page/) folder to `/srv/docker/composes/welcome-page/`.
 Launch it: `docker compose up -d`
 
 In the nginx proxy manager, add a *proxy host*:
@@ -164,15 +179,12 @@ SSL Certificate (SSL tab): request a new certificate
 ```
 
 ### Gitlab
-
 In the domain manager, add a line:
 
 | Sub-domain | TTL  | Type | Value        |
 | ---------- | ---- | ---- | ------------ |
 | gitlab     | 3600 | A    | [Server IP]  |
 
-
-Copy the [`docker-compose.yml`](composes/gitlab/docker-compose.yml) file to `/srv/docker/composes/gitlab/`.
 
 Create a `.env` file, with the following content:
 ```
@@ -194,16 +206,14 @@ docker compose up -d
 ```
 
 And wait (2-5 minutes, or more) that the instance launches (you get a 502 during this time).
+For a more lightweight service, use `Forgejo` for example.
 ### Forgejo
-
 In the domain manager, add a line:
 
 | Sub-domain | TTL  | Type | Value        |
 | ---------- | ---- | ---- | ------------ |
 | git        | 3600 | A    | [Server IP]  |
 
-
-Copy the [`docker-compose.yml`](composes/forgejo/docker-compose.yml) file to `/srv/docker/composes/forgejo/`.
 
 In the nginx proxy manager, add a *proxy host*:
 ```
@@ -223,3 +233,26 @@ To configure the instance, go to the file `/data/gitea/conf/app.ini` in the dock
 ```
 docker exec -it forgejo bash
 ```
+
+### Cryptpad
+In the domain manager, add two lines:
+
+| Sub-domain       | TTL  | Type  | Value                |
+| ---------------- | ---- | ----- | -------------------- |
+| cryptpad         | 3600 | A     | [Server IP]          |
+| sandbox.cryptpad | 3600 | CNAME | cryptpad.domain.tld. |
+
+In the nginx proxy manager, add a *proxy host*:
+```
+Domain name: cryptpad.domain.tld
+Scheme: http
+Forward Hostname / IP: cryptpad
+Forward Port: 3001
+SSL Certificate (SSL tab): request a new certificate
+```
+
+Then launch the docker:
+```
+docker compose up -d
+```
+
