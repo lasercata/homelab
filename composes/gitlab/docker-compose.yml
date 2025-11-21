@@ -4,6 +4,7 @@ services:
     container_name: gitlab
     restart: unless-stopped
     hostname: gitlab.${DOMAIN}
+
     environment:
       GITLAB_OMNIBUS_CONFIG: |
         # Add any other gitlab.rb configuration here, each on its own line
@@ -18,9 +19,9 @@ services:
       - docker-network
 
     volumes:
-      - '/srv/docker/volumes/nginx-proxy-manager/config:/etc/gitlab'
-      - '/srv/docker/volumes/nginx-proxy-manager/logs:/var/log/gitlab'
-      - '/srv/docker/volumes/nginx-proxy-manager/data:/var/opt/gitlab'
+      - '/srv/docker/volumes/gitlab/config:/etc/gitlab'
+      - '/srv/docker/volumes/gitlab/logs:/var/log/gitlab'
+      - '/srv/docker/volumes/gitlab/data:/var/opt/gitlab'
 
     shm_size: '256m'
 
