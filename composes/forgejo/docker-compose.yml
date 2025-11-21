@@ -1,0 +1,27 @@
+services:
+  server:
+    image: codeberg.org/forgejo/forgejo:13
+    container_name: forgejo
+
+    environment:
+      - USER_UID=1000
+      - USER_GID=1000
+
+    restart: unless-stopped
+
+    ports:
+      - '3000:3000'
+      - '22:22'
+
+    networks:
+      - docker-network
+
+    volumes:
+      - /srv/docker/volumes/forgejo:/data
+      - /etc/timezone:/etc/timezone:ro
+      - /etc/localtime:/etc/localtime:ro
+
+networks:
+  docker-network:
+    external: true
+

@@ -193,4 +193,28 @@ Then launch the docker:
 docker compose up -d
 ```
 
-And wait (2-5 minutes) that the instance launches (you get a 502 during this time).
+And wait (2-5 minutes, or more) that the instance launches (you get a 502 during this time).
+### Forgejo
+
+In the domain manager, add a line:
+
+| Sub-domain | TTL  | Type | Value        |
+| ---------- | ---- | ---- | ------------ |
+| git        | 3600 | A    | [Server IP]  |
+
+
+Copy the [`docker-compose.yml`](composes/forgejo/docker-compose.yml) file to `/srv/docker/composes/forgejo/`.
+
+In the nginx proxy manager, add a *proxy host*:
+```
+Domain name: git.domain.tld
+Scheme: http
+Forward Hostname / IP: gitlab
+Forward Port: 3000
+SSL Certificate (SSL tab): request a new certificate
+```
+
+Then launch the docker:
+```
+docker compose up -d
+```
