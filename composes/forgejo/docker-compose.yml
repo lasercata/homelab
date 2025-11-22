@@ -2,12 +2,11 @@ services:
   server:
     image: codeberg.org/forgejo/forgejo:13
     container_name: forgejo
+    restart: unless-stopped
 
     environment:
       - USER_UID=1000
       - USER_GID=1000
-
-    restart: unless-stopped
 
     ports:
       - '3000:3000'
