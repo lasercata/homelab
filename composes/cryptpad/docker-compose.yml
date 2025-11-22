@@ -13,6 +13,8 @@ services:
       - docker-network
 
     environment:
+      - USER_UID=4001
+      - USER_GID=4001
       - CPAD_MAIN_DOMAIN=https://cryptpad.lasercata.com
       - CPAD_SANDBOX_DOMAIN=https://sandbox.cryptpad.lasercata.com
       - CPAD_CONF=/cryptpad/config/config.js

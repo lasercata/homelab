@@ -244,10 +244,10 @@ In the domain manager, add two lines:
 
 In the nginx proxy manager, add a *proxy host*:
 ```
-Domain name: cryptpad.domain.tld
+Domain name: cryptpad.domain.tld, sandbox.cryptpad.domain.tld
 Scheme: http
 Forward Hostname / IP: cryptpad
-Forward Port: 3001
+Forward Port: 3000
 SSL Certificate (SSL tab): request a new certificate
 WebSockets Support: enable
 ```
