@@ -273,7 +273,7 @@ cp .env.default .env
 ```
 
 Update the important values:
-- `MICROBIN_PUBLIC_PATH`: set it to `microbin.<domain.tld>`
+- `MICROBIN_PUBLIC_PATH`: set it to `https://microbin.<domain.tld>`
 - `MICROBIN_ADMIN_PASSWORD`: change the admin password
 
 
@@ -297,4 +297,6 @@ Then launch the docker:
 ```
 docker compose up -d
 ```
+
+Admin page: accessible at `microbin.domain.tld/admin`.
 
