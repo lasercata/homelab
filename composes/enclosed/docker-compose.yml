@@ -10,7 +10,7 @@ services:
       - docker-network
 
     volumes:
-      - enclosed-data:/app/.data
+      - /srv/docker/volumes/enclosed/enclosed-data:/app/.data
 
     environment:
       AUTHENTICATION_JWT_SECRET: ${AUTHENTICATION_JWT_SECRET}
@@ -19,6 +19,3 @@ networks:
   docker-network:
     external: true
 
-# volumes:
-#   enclosed-data:
-#     driver: local
