@@ -14,6 +14,7 @@ services:
 
     environment:
       AUTHENTICATION_JWT_SECRET: ${AUTHENTICATION_JWT_SECRET}
+      NOTES_MAX_ENCRYPTED_PAYLOAD_LENGTH: ${NOTES_MAX_ENCRYPTED_PAYLOAD_LENGTH}
 
 networks:
   docker-network:
