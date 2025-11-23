@@ -14,7 +14,7 @@ services:
       # Change if you want to mount the database somewhere else.
       # In this case, you can get rid of the db volume below
       # and instead do a mount manually by specifying the location.
-      # - db_url=/urls.sqlite
+      - db_url=/data/urls.sqlite
 
       # Change it in case you want to set the website name
       # displayed in front of the shorturls, defaults to
@@ -44,7 +44,7 @@ services:
       # - cache_control_header=no-cache, private
 
     volumes:
-      - /srv/docker/volumes/chhoto-url/db:/urls.sqlite
+      - /srv/docker/volumes/chhoto-url/db:/data
 
 networks:
   docker-network:
