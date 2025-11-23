@@ -19,15 +19,7 @@ services:
     # In Docker Compose you can provide the CLI flag like this:
     #command: ["--config-file", "/path/to/your/config.toml"]
     volumes:
-      - file_storage:/app/data
-
-volumes:
-  file_storage:
-    driver: local
-    driver_opts:
-      type: none
-      device: /srv/docker/volumes/ferrishare/data
-      o: size=16G
+      - /srv/docker/volumes/ferrishare/data:/app/data
 
 networks:
   docker-network:
