@@ -308,7 +308,7 @@ cp .env.default .env
 
 Update the important values:
 - `AUTHENTICATION_JWT_SECRET`: change the token
-- `NOTES_MAX_ENCRYPTED_PAYLOAD_LENGTH`: the maximum size for file upload, in B. Here it is set to 256MiB.
+- `NOTES_MAX_ENCRYPTED_PAYLOAD_LENGTH`: the maximum size for file upload, in B. Here it is set to 25MiB.
 
 In the domain manager, add a line:
 
