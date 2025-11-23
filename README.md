@@ -374,11 +374,11 @@ In the nginx proxy manager, add a *proxy host*:
 Domain name: share.domain.tld
 Scheme: http
 Forward Hostname / IP: ferrishare
-Forward Port: 80
+Forward Port: 3000
 SSL Certificate (SSL tab): request a new certificate
 ```
 
-Configure the docker:
+Configure the app settings (admin password, max upload size, max service storage, ...):
 ```
 docker compose run --rm -it ferrishare --init
 ```
