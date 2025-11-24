@@ -46,10 +46,10 @@ Enable it.
 Drop all by default.
 
 Add rule:
-| Protocol | Source IP | Source port | Destination IP | Destination port |
-| -------- | --------- | ----------- | -------------- | ---------------- |
-| TCP      | any       | any         | [Server IP]    | [SSH port]       |
-|          |           |             |                |                  |
+| Direction | Protocol | Source IP | Source port | Destination IP | Destination port |
+| --------- | -------- | --------- | ----------- | -------------- | ---------------- |
+| Inbound   | TCP      | any       | any         | [Server IP]    | [SSH port]       |
+| Inbound   |          |           |             |                |                  |
 
 ## Make it home
 ### Update
@@ -387,4 +387,97 @@ Then launch the docker:
 ```
 docker compose up -d
 ```
+
+## Setup email
+I am going to use [docker-mailserver](https://github.com/docker-mailserver/docker-mailserver) (DMS).
+
+### DNS
+| Sub-domain | TTL  | Type | Value               |
+| ---------- | ---- | ---- | ------------------- |
+| mail       | 3600 | A    | [Server IP]         |
+| @          | 3600 | MX   | 10 mail.domain.tld. |
+
+DKIM, DMARC & SPF: see the corresponding sections.
+
+### Server PTR
+Configure the `PTR` field (reverse DNS record) to `mail.domain.tld`
+
+### Firewall
+Add the following rules to your firewall:
+
+| Direction | Protocol | Source IP   | Source port | Destination IP | Destination port | Comment                    |
+| --------- | -------- | ----------- | ----------- | -------------- | ---------------- | -------------------------- |
+| Inbound   | TCP      | any         | any         | [Server IP]    | 25               | SMTP in                    |
+| Inbound   | TCP      | any         | any         | [Server IP]    | 465 (587)        | SMTP submission            |
+| Inbound   | TCP      | any         | any         | [Server IP]    | 143              | IMAP in                    |
+| Inbound   | TCP      | any         | any         | [Server IP]    | 993              | IMAPS in                   |
+| Outbound  | TCP      | [Server IP] | any         | any            | 25               | SMTP to other servs        |
+| Outbound  | TCP      | [Server IP] | any         | any            | 465 (587)        | SMTP connect external mail |
+<!-- | Outbound  | TCP      | [Server IP] | any         | any            | 53               | DNS queries (domain res)   | -->
+
+Note:
+Please prefer port 465 over 587, as the former provides implicit TLS.
+
+### Configure and deploy
+1. Edit the [`docker-compose.yml`](composes/mail/docker-compose.yml) file:
+    - Substitue the `hostname:` value to `mail.domain.tld` (replace with your domain).
+
+2. **SSL**:
+```bash
+# Requires access to port 80 from the internet, adjust your firewall if needed.
+docker run --rm -it \
+  -v "/srv/docker/volumes/mail/certs/:/etc/letsencrypt/" \
+  -v "/srv/docker/logs/mail/certs/:/var/log/letsencrypt/" \
+  -p 80:80 \
+  certbot/certbot certonly --standalone -d mail.example.com
+```
+
+TODO: renew
+
+3. **Deploy**:
+- Launch the image:
+```
+docker compose up -d
+```
+
+- Then you have two minutes to add at least one email account (after the first launch).
+Run:
+```
+docker exec -ti <CONTAINER NAME> setup email add user@domain.tld
+```
+
+- Add a least one alias (by convention the *podmaster alias*):
+```
+docker exec -ti <CONTAINER NAME> setup alias add postmaster@example.com user@example.com
+```
+
+### DKIM
+DomainKeys Identified Mail (DKIM) is an email authentication method designed to detect forged sender addresses in email (email spoofing), a technique often used in phishing and email spam (source: Wikipedia).
+
+Generate DKIM keys:
+```
+docker exec -it <CONTAINER NAME> setup config dkim
+```
+And then restart your instance.
+
+This should have generated a `mail.txt` file.
+
+Then, configure the DNS accordingly:
+
+| Sub-domain        | TTL  | Type | Value                   |
+| ----------------- | ---- | ---- | ----------------------- |
+| `mail._domainkey` | 3600 | TXT  | File content with (...) |
+
+The value should look to something like `v=DKIM1; k=rsa; p=MIIBIjA.......`
+
+Test it works with `dig`:
+```
+dig +short TXT mail._domainkey.<DOMAIN.TLD>
+```
+
+### SPF
+Sender Policy Framework (SPF) is a simple email-validation system designed to detect email spoofing by providing a mechanism to allow receiving mail exchangers to check that incoming mail from a domain comes from a host authorized by that domain's administrators (source: Wikipedia).
+
+Not configured here (for me).
+
 

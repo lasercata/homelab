@@ -1,0 +1,37 @@
+services:
+  mailserver:
+    image: ghcr.io/docker-mailserver/docker-mailserver:latest
+    container_name: mailserver
+    restart: unless-stopped
+
+    # Provide the FQDN of your mail server here (Your DNS MX record should point to this value)
+    hostname: mail.lasercata.com
+    env_file: mailserver.env
+
+    # More information about the mail-server ports:
+    # https://docker-mailserver.github.io/docker-mailserver/latest/config/security/understanding-the-ports/
+    ports:
+      - "25:25"    # SMTP  (explicit TLS => STARTTLS, Authentication is DISABLED => use port 465/587 instead)
+      - "143:143"  # IMAP4 (explicit TLS => STARTTLS)
+      - "465:465"  # ESMTP (implicit TLS)
+      - "587:587"  # ESMTP (explicit TLS => STARTTLS)
+      - "993:993"  # IMAP4 (implicit TLS)
+
+    volumes:
+      - /srv/docker/volumes/mail/docker-data/dms/mail-data/:/var/mail/
+      - /srv/docker/volumes/mail/docker-data/dms/mail-state/:/var/mail-state/
+      - /srv/docker/volumes/mail/docker-data/dms/mail-logs/:/var/log/mail/
+      - /srv/docker/volumes/mail/docker-data/dms/config/:/tmp/docker-mailserver/
+      - /srv/docker/volumes/mail/certs:/etc/letsencrypt
+      - /etc/localtime:/etc/localtime:ro
+
+    stop_grace_period: 1m
+
+    # Uncomment if using `ENABLE_FAIL2BAN=1`:
+    # cap_add:
+    #   - NET_ADMIN
+
+    healthcheck:
+      test: "ss --listening --ipv4 --tcp | grep --silent ':smtp' || exit 1"
+      timeout: 3s
+      retries: 0
