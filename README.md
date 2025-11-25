@@ -411,8 +411,8 @@ Add the following rules to your firewall:
 | Inbound   | TCP      | any         | any         | [Server IP]    | 465 (587)        | SMTP submission            |
 | Inbound   | TCP      | any         | any         | [Server IP]    | 143              | IMAP in                    |
 | Inbound   | TCP      | any         | any         | [Server IP]    | 993              | IMAPS in                   |
-| Outbound  | TCP      | [Server IP] | any         | any            | 25               | SMTP to other servs        |
-| Outbound  | TCP      | [Server IP] | any         | any            | 465 (587)        | SMTP connect external mail |
+| Outbound  | TCP      | [Server IP] | 25          | any            | any              | SMTP to other servs        |
+| Outbound  | TCP      | [Server IP] | 465 (587)   | any            | any              | SMTP connect external mail |
 <!-- | Outbound  | TCP      | [Server IP] | any         | any            | 53               | DNS queries (domain res)   | -->
 
 Note:
@@ -424,13 +424,15 @@ Please prefer port 465 over 587, as the former provides implicit TLS.
 
 2. **SSL**:
 ```bash
-# Requires access to port 80 from the internet, adjust your firewall if needed.
+# Requires access to port 80 from the internet, adjust your firewall if needed, and stop all services using the port 80.
 docker run --rm -it \
   -v "/srv/docker/volumes/mail/certs/:/etc/letsencrypt/" \
   -v "/srv/docker/logs/mail/certs/:/var/log/letsencrypt/" \
   -p 80:80 \
-  certbot/certbot certonly --standalone -d mail.example.com
+  certbot/certbot certonly --standalone -d mail.<DOMAIN.TLD>
 ```
+
+It asks for an email address. It is used to send notifications regarding renewals and security issues (brave AI).
 
 TODO: renew
 
@@ -451,6 +453,17 @@ docker exec -ti <CONTAINER NAME> setup email add user@domain.tld
 docker exec -ti <CONTAINER NAME> setup alias add postmaster@example.com user@example.com
 ```
 
+- To forward emails sent to inexistant users to admin: 
+```
+docker exec -ti <CONTAINER NAME> setup alias add @example.com admin@example.com
+```
+But this will forward all emails to the admin... (even for existing accounts)
+
+- To list the aliases:
+```
+docker exec -ti <CONTAINER NAME> setup alias list
+```
+
 ### DKIM
 DomainKeys Identified Mail (DKIM) is an email authentication method designed to detect forged sender addresses in email (email spoofing), a technique often used in phishing and email spam (source: Wikipedia).
 
@@ -464,11 +477,12 @@ This should have generated a `mail.txt` file.
 
 Then, configure the DNS accordingly:
 
-| Sub-domain        | TTL  | Type | Value                   |
-| ----------------- | ---- | ---- | ----------------------- |
-| `mail._domainkey` | 3600 | TXT  | File content with (...) |
+| Sub-domain        | TTL  | Type | Value                     |
+| ----------------- | ---- | ---- | -----------------------   |
+| `mail._domainkey` | 3600 | TXT  | File content within (...) |
 
 The value should look to something like `v=DKIM1; k=rsa; p=MIIBIjA.......`
+For specific formatting, see [here](https://docker-mailserver.github.io/docker-mailserver/latest/config/best-practices/dkim_dmarc_spf/#web-interface)
 
 Test it works with `dig`:
 ```
