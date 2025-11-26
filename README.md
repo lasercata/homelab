@@ -478,7 +478,7 @@ This should have generated a `mail.txt` file.
 Then, configure the DNS accordingly:
 
 | Sub-domain        | TTL  | Type | Value                     |
-| ----------------- | ---- | ---- | -----------------------   |
+| ----------------- | ---- | ---- | ------------------------- |
 | `mail._domainkey` | 3600 | TXT  | File content within (...) |
 
 The value should look to something like `v=DKIM1; k=rsa; p=MIIBIjA.......`
@@ -489,9 +489,23 @@ Test it works with `dig`:
 dig +short TXT mail._domainkey.<DOMAIN.TLD>
 ```
 
+### DMARC
+Enabled by default in docker-mailserver.
+
+Only need to add a DNS TXT value:
+
+| Sub-domain           | TTL  | Type | Value                                                                                                                                                    |
+| -------------------- | ---- | ---- | -------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `_dmarc.domain.tld.` | 3600 | TXT  | `v=DMARC1; p=none; sp=none; fo=0; adkim=r; aspf=r; pct=100; rf=afrf; ri=86400; rua=mailto:dmarc.report@example.com; ruf=mailto:dmarc.report@example.com` |
+
+Please make sure to change the email addresses.
+
 ### SPF
 Sender Policy Framework (SPF) is a simple email-validation system designed to detect email spoofing by providing a mechanism to allow receiving mail exchangers to check that incoming mail from a domain comes from a host authorized by that domain's administrators (source: Wikipedia).
 
-Not configured here (for me).
+Also only needed to add a DNS TXT value:
 
+| Sub-domain    | TTL  | Type | Value            |
+| ------------- | ---- | ---- | ---------------- |
+| `domain.tld.` | 3600 | TXT  | `v=spf1 mx ~all` |
 
