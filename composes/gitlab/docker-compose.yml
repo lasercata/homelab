@@ -1,14 +1,10 @@
 services:
   gitlab:
     image: gitlab/gitlab-ce:latest
-    container_name: gitlab
     restart: unless-stopped
+    container_name: gitlab
     hostname: gitlab.${DOMAIN}
-
-    environment:
-      GITLAB_OMNIBUS_CONFIG: |
-        # Add any other gitlab.rb configuration here, each on its own line
-        external_url http://gitlab.${DOMAIN}
+    shm_size: '256m'
 
     ports:
       # - '80:80'  # Already configured using nginx-proxy-manager in the network `docker-network`.
@@ -18,12 +14,15 @@ services:
     networks:
       - docker-network
 
+    environment:
+      GITLAB_OMNIBUS_CONFIG: |
+        # Add any other gitlab.rb configuration here, each on its own line
+        external_url http://gitlab.${DOMAIN}
+
     volumes:
       - '/srv/docker/volumes/gitlab/config:/etc/gitlab'
       - '/srv/docker/volumes/gitlab/logs:/var/log/gitlab'
       - '/srv/docker/volumes/gitlab/data:/var/opt/gitlab'
-
-    shm_size: '256m'
 
 networks:
   docker-network:

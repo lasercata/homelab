@@ -1,17 +1,14 @@
 services:
   microbin:
     image: danielszabo99/microbin:latest
-    container_name: microbin
     restart: unless-stopped
+    container_name: microbin
 
     ports:
       - "${MICROBIN_PORT}:8080"
 
     networks:
       - docker-network
-
-    volumes:
-      - /srv/docker/volumes/microbin/microbin-data:/app/microbin_data
 
     environment:
       MICROBIN_BASIC_AUTH_USERNAME: ${MICROBIN_BASIC_AUTH_USERNAME}
@@ -52,6 +49,9 @@ services:
       MICROBIN_ENCRYPTION_SERVER_SIDE: ${MICROBIN_ENCRYPTION_SERVER_SIDE}
       MICROBIN_MAX_FILE_SIZE_ENCRYPTED_MB: ${MICROBIN_MAX_FILE_SIZE_ENCRYPTED_MB}
       MICROBIN_MAX_FILE_SIZE_UNENCRYPTED_MB: ${MICROBIN_MAX_FILE_SIZE_UNENCRYPTED_MB}
+
+    volumes:
+      - /srv/docker/volumes/microbin/microbin-data:/app/microbin_data
 
 networks:
   docker-network:

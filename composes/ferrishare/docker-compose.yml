@@ -1,9 +1,8 @@
 services:
-  # The FerriShare service (includes frontend, backend and database)
   ferrishare:
     image: ghcr.io/tobiasmarschner/ferrishare:1
-    container_name: ferrishare
     restart: unless-stopped
+    container_name: ferrishare
 
     networks:
       - docker-network

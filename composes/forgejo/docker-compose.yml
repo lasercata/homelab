@@ -1,12 +1,8 @@
 services:
-  server:
+  forgejo:
     image: codeberg.org/forgejo/forgejo:13
-    container_name: forgejo
     restart: unless-stopped
-
-    environment:
-      - USER_UID=1000
-      - USER_GID=1000
+    container_name: forgejo
 
     ports:
       - '3000:3000'
@@ -14,6 +10,10 @@ services:
 
     networks:
       - docker-network
+
+    environment:
+      - USER_UID=1000
+      - USER_GID=1000
 
     volumes:
       - /srv/docker/volumes/forgejo:/data

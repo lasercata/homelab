@@ -2,6 +2,7 @@ services:
   enclosed:
     image: corentinth/enclosed
     restart: unless-stopped
+    container_name: enclosed
 
     ports:
       - 8787:8787
@@ -9,13 +10,13 @@ services:
     networks:
       - docker-network
 
-    volumes:
-      - /srv/docker/volumes/enclosed/enclosed-data:/app/.data
-
     environment:
       AUTHENTICATION_JWT_SECRET: ${AUTHENTICATION_JWT_SECRET}
       NOTES_MAX_ENCRYPTED_PAYLOAD_LENGTH: ${NOTES_MAX_ENCRYPTED_PAYLOAD_LENGTH}
       PUBLIC_IS_SETTING_NO_EXPIRATION_ALLOWED: ${PUBLIC_IS_SETTING_NO_EXPIRATION_ALLOWED}
+
+    volumes:
+      - /srv/docker/volumes/enclosed/enclosed-data:/app/.data
 
 networks:
   docker-network:

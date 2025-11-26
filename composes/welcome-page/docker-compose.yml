@@ -1,10 +1,12 @@
 services:
   welcome-page:
     image: httpd:latest
-    container_name: welcome-page
     restart: unless-stopped
+    container_name: welcome-page
+
     networks:
       - docker-network
+
     volumes:
       - ./html:/usr/local/apache2/htdocs/
 

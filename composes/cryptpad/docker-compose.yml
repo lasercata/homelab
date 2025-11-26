@@ -1,9 +1,8 @@
 services:
-  server:
+  cryptpad:
     image: cryptpad/cryptpad:latest
-    container_name: cryptpad
-
     restart: unless-stopped
+    container_name: cryptpad
 
     ports:
       - '3001:3000'
