@@ -24,17 +24,21 @@ running_services=$(docker ps --format '{{.Names}}')
 
 # Then down each
 echo "Stopping the services..."
+cd composes/
 for service in $services_folders; do
     cd "$service"
     echo "Stopping '$service'"
     docker compose down
     cd ..
+done
+cd ..
 
 #---Tar
 tar -czvf backups/"$date_prefix"_volumes.tar volumes/
 
 #---Docker compose up
 echo "Relaunching the services..."
+cd composes/
 for service in $services_folders; do
     cd "$service"
 
@@ -47,6 +51,8 @@ for service in $services_folders; do
     fi
 
     cd ..
+done
+cd ..
 
 # ====== ./composes/**/.env ======
 tar -czvf backups/"$date_prefix"_env.tar composes/**/.env
