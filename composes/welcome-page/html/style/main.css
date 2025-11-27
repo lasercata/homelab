@@ -61,6 +61,10 @@ body {
     display: flex;
     flex-direction: row;
     gap: 10px;
+
+    /* display: grid; */
+    /* grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); */
+    /* width: 500px; */
 }
 
 .button {
@@ -119,4 +123,12 @@ body {
     margin: 0;
     font-size: 1em;
     color: #888;
+}
+
+@media (max-width: 1120px) {
+    .services-boxes-container {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+    }
 }
