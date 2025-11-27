@@ -33,8 +33,15 @@ echo
 cd composes/
 for service in $services_folders; do
     cd "$service"
-    echo "Stopping '$service'"
-    docker compose down
+
+    echo "In folder '$service':"
+    if [[ $running_services =~ "$service" ]]; then
+        echo "stopping it"
+        docker compose down
+    else
+        echo "is not running"
+    fi
+
     cd ..
 done
 cd ..
@@ -74,4 +81,4 @@ echo
 echo "====== /home/admin ======"
 echo
 
-tar -czvf backups/"$date_prefix"_home.tar.gz /home/admin
+tar -czf backups/"$date_prefix"_home.tar.gz /home/admin
