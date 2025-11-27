@@ -1,9 +1,10 @@
 # Server configuration
 
-## Register
+## Server initialisation
+### Register
 Register a domain name and buy a server / VPS.
 
-## Domain name (DNS)
+### Domain name (DNS)
 Go to the *manage domain* in your provider website.
 
 Add a line
@@ -11,16 +12,16 @@ Add a line
 | ---------- | ---- | ---- | ------------ |
 | @          | 3600 | A    | [Server IP]  |
 
-## Secure your server: SSH, add user
+### Secure your server: SSH, add user
 Connect to your server (via SSH).
 
-### User creation
+#### User creation
 - Set a password for the root user (`passwd`).
 - Create a new user (`useradd admin`), and set a password (`passwd admin`)
 - Add it to the sudoers (`usermod -aG sudo admin`)
 
-### SSH
-#### Server side
+#### SSH
+##### Server side
 Do the following (edit `/etc/ssh/sshd_config`):
 - use key-based authentication (add your public key to `~/.ssh/authorized_keys`) ;
 - disable password authentication ;
@@ -32,7 +33,7 @@ Then reload the daemon:
 systemctl restart sshd
 ```
 
-#### Client (admin) side
+##### Client (admin) side
 For convenience, edit (on your local machine) the file `~/.ssh/config` and add:
 ```
 Host [domain.tld]
@@ -41,7 +42,7 @@ Host [domain.tld]
     User [the user you created]
 ```
 
-## Firewall
+### Firewall
 Enable it.
 Drop all by default.
 
@@ -51,14 +52,14 @@ Add rule:
 | Inbound   | TCP      | any       | any         | [Server IP]    | [SSH port]       |
 | Inbound   |          |           |             |                |                  |
 
-## Make it home
-### Update
+### Make it home
+#### Update
 On debian:
 ```
 sudo apt update && sudo apt upgrade
 ```
 
-### Install packages
+#### Install packages
 - tmux
 - neovim
 - git
@@ -67,7 +68,7 @@ sudo apt update && sudo apt upgrade
 - fastfetch
 - batcat
 
-### Clone dotfiles
+#### Clone dotfiles
 Clone `https://github.com/lasercata/minimal_dotfiles.git`, and create all the symlinks for the configuration files.
 
 Set the default shell to bash:
@@ -108,14 +109,11 @@ Here is the general file structure:
             └── service_n/
 ```
 
-<!-- To create it and set the permissions: -->
-<!-- ``` -->
-<!-- sudo mkdir -p /srv/docker/composes -->
-<!-- sudo mkdir /srv/docker/volumes -->
-<!-- sudo mkdir /srv/docker/logs -->
-<!---->
-<!-- sudo chown -hR admin:admin /srv/docker -->
-<!-- ``` -->
+The `composes/` folder contains the `docker-compose.yml` file (the configuration) of each service.
+
+The `volumes/` folder contains the docker mounted volumes of the services (the data).
+
+The `logs/` folder contains the logs of some services (currently only for a setup of emails)
 
 ### Download all config (docker)
 Create the `/srv/docker/` folder and set the right owner:
@@ -511,4 +509,25 @@ Also only needed to add a DNS TXT value:
 | Sub-domain    | TTL  | Type | Value            |
 | ------------- | ---- | ---- | ---------------- |
 | `domain.tld.` | 3600 | TXT  | `v=spf1 mx ~all` |
+
+## Backups
+### Data to backup
+- `/srv/docker/volumes/`: the services' data ;
+- `/srv/docker/composes/**/.env`: the private environment variables ;
+- `/home/admin/.ssh`: the SSH keys
+- `/home/admin/`: optional. The configuration of the admin user.
+
+Note: when creating the backup, the corresponding volume should be down to ensure the data integrity.
+
+### How to backup
+#### Create the archives
+To create the archives, simply run the `backup.sh` script.
+It will take care of taking down the containers and relaunching them.
+
+#### Copy the archives
+From your machine, retrieve the archives using `scp`:
+```bash
+# Assuming you used ~/.ssh/config to setup Port, User and IdentityFile
+scp domain.tld:/srv/docker/backups .
+```
 

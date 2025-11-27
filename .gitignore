@@ -1,4 +1,6 @@
 logs/
 volumes/
+backups/
 
+*.tar
 .env
