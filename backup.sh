@@ -7,9 +7,11 @@
 #
 # It first stops the running containers, and relaunch them (and only the ones that were running).
 #
+# Sudo needed to backup the `volumes/`.
+#
 # Notes (tar parameters):
-# - Create tar archive: `tar -czvf name.tar dir/` (`c`: create, `z`: compress?, `v`: verbose, `f`: give file name).
-# - Extract archive: `tar -xvp --same-owner -f name.tar dest/` (`x`: extract, `p`: preserve permissions, `same-owner`: preserve owner)
+# - Create tar archive: `tar -czvf name.tar.gz dir/` (`c`: create, `z`: compress with gz, `v`: verbose, `f`: give file name).
+# - Extract archive: `tar -xzvp --same-owner -f name.tar.gz dest/` (`x`: extract, `p`: preserve permissions, `same-owner`: preserve owner)
 
 # ====== Init ======
 services_folders=$(ls composes/)
@@ -38,7 +40,7 @@ done
 cd ..
 
 #---Tar
-tar -czvf backups/"$date_prefix"_volumes.tar volumes/
+sudo tar -czf backups/"$date_prefix"_volumes.tar.gz volumes/
 
 #---Docker compose up
 echo
@@ -65,11 +67,11 @@ echo
 echo "====== ./composes/**/.env ======"
 echo
 
-tar -czvf backups/"$date_prefix"_env.tar composes/**/.env
+tar -czf backups/"$date_prefix"_env.tar.gz composes/**/.env
 
 # ====== /home/admin ======
 echo
 echo "====== /home/admin ======"
 echo
 
-tar -czvf backups/"$date_prefix"_home.tar /home/admin
+tar -czvf backups/"$date_prefix"_home.tar.gz /home/admin
