@@ -12,6 +12,8 @@
 # Notes (tar parameters):
 # - Create tar archive: `tar -czvf name.tar.gz dir/` (`c`: create, `z`: compress with gz, `v`: verbose, `f`: give file name).
 # - Extract archive: `tar -xzvp --same-owner -f name.tar.gz dest/` (`x`: extract, `p`: preserve permissions, `same-owner`: preserve owner)
+#
+# Avoid the -v (verbose) parameter as it flood the error messages.
 
 # ====== Init ======
 services_folders=$(ls composes/)

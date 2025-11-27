@@ -531,3 +531,9 @@ From your machine, retrieve the archives using `scp`:
 scp domain.tld:/srv/docker/backups .
 ```
 
+#### Restore (when needed)
+To extract content of an archive:
+```
+tar -xzp --same-owner -f name.tar.gz dest/
+```
+
