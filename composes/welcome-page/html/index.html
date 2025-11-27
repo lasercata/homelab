@@ -6,92 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Welcome page</title>
 
-    <style>
-        :root {
-            --lasercata-blue-color: #000; // #020f24;
-            --lasercata-orange-color: #ff4500;
-            --lasercata-dark-orange-color: #f02000;
-        }
-        header {
-            padding: 1px;
-            font-size: 5vh;
-            text-align: center;
-            background-color: var(--lasercata-blue-color);
-        }
-
-        body {
-            margin: 0;
-            padding: 0;
-            font-family: Arial, sans-serif;
-            display: flex;
-            flex-direction: column;
-            min-height: 100vh;
-            justify-content: center;
-            align-items: center;
-            background-color: var(--lasercata-blue-color);
-            font-family: Arial, sans-serif;
-            color: white;
-        }
-
-        .center {
-            margin: auto;
-            width: 80%;
-            padding: 5px;
-            text-align: center;
-        }
-
-        #content {
-            flex: 1; /* Expand and push the footer to the bottom */
-            padding: 20px;
-        }
-
-        #footer {
-            text-align: center;
-            margin-top: 20px;
-            padding: 10px;
-            color: gray;
-            font-size: 2vh;
-        }
-
-        #footer a {
-            color: var(--lasercata-orange-color);
-            text-decoration: none;
-        }
-
-        #footer a:hover {
-            color: var(--lasercata-dark-orange-color);
-        }
-
-        #button-container {
-            text-align: center;
-            margin-top: 20px;
-        }
-        #button-container-inner {
-            display: flex;
-            flex-direction: column;
-            gap: 10px;
-        }
-
-        .button {
-            display: inline-block;
-            padding: 5px 10px;
-            margin: 0 10px;
-            /* width: 90px; */
-            text-align: center;
-            text-decoration: none;
-            font-size: 16px;
-            cursor: pointer;
-            color: #000;
-            background-color: var(--lasercata-orange-color);
-            border: 1px solid --lasercata-blue-color;
-            border-radius: 5px;
-            transition: background-color 0.3s ease;
-        }
-
-        .button:hover {
-            background-color: var(--lasercata-dark-orange-color);
-        }
-    </style>
+    <link rel='stylesheet' href='style/main.css'>
 </head>
 
 <body>
@@ -103,17 +18,55 @@
     </div>
     <div id="button-container" id="content">
         <h2>Services:</h2>
-        <div class='button-container-inner'>
-            <a href="https://git.lasercata.com/explore/repos" class="button">Git (Forgejo)</a>
-            <a href="https://cryptpad.lasercata.com/" class="button">Collaboration suite + drive (Cryptpad)</a>
-            <a href="https://enclosed.lasercata.com/" class="button">File and notes sharing (Enclosed)</a>
-            <a href="https://share.lasercata.com/" class="button">File sharing (FerriShare)</a>
-            <a href="https://s.lasercata.com/" class="button">URL shortener (Chhoto-url)</a>
+        <div class='services-boxes-container'>
+            <!-- <a href="https://git.lasercata.com/explore/repos" class="button">Git (Forgejo)</a> -->
+            <!-- <a href="https://cryptpad.lasercata.com/" class="button">Collaboration suite + drive (Cryptpad)</a> -->
+            <!-- <a href="https://enclosed.lasercata.com/" class="button">File and notes sharing (Enclosed)</a> -->
+            <!-- <a href="https://share.lasercata.com/" class="button">File sharing (FerriShare)</a> -->
+            <!-- <a href="https://s.lasercata.com/" class="button">URL shortener (Chhoto-url)</a> -->
+
+            <a class='service-box' href='https://git.lasercata.com/explore/repos'>
+                <img src='images/git_logo.png' class='service-logo'>
+                <div class='service-box-text'>
+                    <h2 class='service-title'>Forgejo</h2>
+                    <p class='service-description'>Git service</p>
+                </div>
+            </a>
+            <a class='service-box' href='https://cryptpad.lasercata.com/'>
+                <img src='images/cryptpad_logo.png' class='service-logo'>
+                <div class='service-box-text'>
+                    <h2 class='service-title'>Cryptpad</h2>
+                    <p class='service-description'>Collaboration suite + drive</p>
+                </div>
+            </a>
+            <a class='service-box' href='https://enclosed.lasercata.com/'>
+                <img src='images/enclosed_logo.png' class='service-logo'>
+                <div class='service-box-text'>
+                    <h2 class='service-title'>Enclosed</h2>
+                    <p class='service-description'>Notes (text) sharing</p>
+                </div>
+            </a>
+            <a class='service-box' href='https://share.lasercata.com/'>
+                <img src='images/ferrishare_logo.png' class='service-logo'>
+                <div class='service-box-text'>
+                    <h2 class='service-title'>FerriShare</h2>
+                    <p class='service-description'>File sharing</p>
+                </div>
+            </a>
+            <a class='service-box' href='https://s.lasercata.com/'>
+                <img src='images/chhoto-url_logo.png' class='service-logo'>
+                <div class='service-box-text'>
+                    <h2 class='service-title'>Chhoto-url</h2>
+                    <p class='service-description'>URL shortener</p>
+                </div>
+            </a>
         </div>
+
     </div>
     <div id="footer">
         <p>
         Contact: <a href='mailto:contact@lasercata.com'>contact@lasercata.com</a>
+        (PGP key available on <a href='https://keys.openpgp.org/search?q=contact%40lasercata.com'>keys.openpgp.org</a>)
         </p>
     </div>
 </body>
