@@ -121,6 +121,7 @@ body {
 
 .service-description {
     margin: 0;
+    text-align: left;
     font-size: 1em;
     color: #888;
 }
