@@ -534,7 +534,7 @@ scp domain.tld:/srv/docker/backups .
 Or to keep a mirror of the `backups/` folder on your machine, use `rsync`:
 ```
 # Assuming you used ~/.ssh/config to setup Port, User and IdentityFile
-rsync -vhP domain.tld:/srv/docker/backups/ backups/
+rsync -rvhP domain.tld:/srv/docker/backups/ backups/
 ```
 
 #### Restore (when needed)
@@ -543,3 +543,16 @@ To extract content of an archive:
 tar -xzp --same-owner -f name.tar.gz dest/
 ```
 
+### Automatize (cron)
+Install `cron`:
+```
+sudo apt install cron
+```
+
+To add a job to run every day at 3 a.m, as root:
+```
+$ sudo crontab -e
+
+# Add the line:
+# 0 3 * * * cd /srv/docker && ./backup.sh
+```

@@ -74,6 +74,7 @@ backup_volumes() {
     cd ..
 
     #---Tar
+    echo "--------------------------- Archiving ./volumes (you might need to enter sudo password)"
     sudo tar -czf backups/"$date_prefix"_volumes.tar.gz volumes/
 
     #---Docker compose up
@@ -123,5 +124,6 @@ backup_volumes
 
 # ------ Keep only last 3 backups (remove all the previous ones) ------ 
 # Note: one backup is 3 tar files => we keep the 9 last files
+echo "------ Deleting old backups (if applicable) ------"
 delete_firsts 'backups/' '9'
 
