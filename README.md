@@ -415,6 +415,10 @@ Forward Port: 5432
 SSL Certificate (SSL tab): request a new certificate
 ```
 
+To restrict access:
+- Create a new *access list*, add a username and a password in *Authorizations*, and in *Rules*, for *Allow* enter `all` ;
+- In the proxy host, change *access list* to the corresponding access list.
+
 Then launch the docker:
 ```
 docker compose up -d
