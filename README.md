@@ -420,10 +420,12 @@ Note:
 Please prefer port 465 over 587, as the former provides implicit TLS.
 
 ### Configure and deploy
-1. Edit the [`docker-compose.yml`](composes/mail/docker-compose.yml) file:
+#### 1. Edit `docker-compose.yml`
+Edit the [`docker-compose.yml`](composes/mail/docker-compose.yml) file:
     - Substitue the `hostname:` value to `mail.domain.tld` (replace with your domain).
 
-2. **SSL**:
+#### SSL
+- Create a certificate for `mail.domain.tld`:
 ```bash
 # Requires access to port 80 from the internet, adjust your firewall if needed, and stop all services using the port 80.
 docker run --rm -it \
@@ -435,9 +437,16 @@ docker run --rm -it \
 
 It asks for an email address. It is used to send notifications regarding renewals and security issues (brave AI).
 
-TODO: renew
+- Auto renew the certificate:
+Add a user cron job that runs `./renew_mail_cert.sh`:
+```
+$ crontab -e
 
-3. **Deploy**:
+# Add the line:
+# 0 3 * * * cd /srv/docker && ./renew_mail_cert.sh
+```
+
+#### Deploy
 - Launch the image:
 ```
 docker compose up -d
@@ -549,10 +558,10 @@ Install `cron`:
 sudo apt install cron
 ```
 
-To add a job to run every day at 3 a.m, as root:
+To add a job to run every day at 3:30 a.m, as root:
 ```
 $ sudo crontab -e
 
 # Add the line:
-# 0 3 * * * cd /srv/docker && ./backup.sh
+# 30 3 * * * cd /srv/docker && ./backup.sh
 ```
