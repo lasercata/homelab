@@ -353,7 +353,7 @@ https_only: true
 ## Accepted values: true, false
 ## Default: true
 ##
-#registration_enabled: true
+registration_enabled: false
 
 ##
 ## Allow/Forbid users to log-in.
@@ -361,7 +361,7 @@ https_only: true
 ## Accepted values: true, false
 ## Default: true
 ##
-#login_enabled: true
+login_enabled: false
 
 ##
 ## Enable/Disable the captcha challenge on the login page.
@@ -719,6 +719,7 @@ default_user_preferences:
   ## Default: ["Popular", "Trending", "Subscriptions", "Playlists"]  (show all feeds)
   ##
   #feed_menu: ["Popular", "Trending", "Subscriptions", "Playlists"]
+  feed_menu: ["Subscriptions"]
 
   ##
   ## Default feed to display on the home page.
@@ -730,6 +731,7 @@ default_user_preferences:
   ## Default: Popular
   ##
   #default_home: Popular
+  default_home: 
 
   ##
   ## Default number of results to display per page.
@@ -785,7 +787,7 @@ default_user_preferences:
   ## Accepted values: true, false
   ## Default: true
   ##
-  #related_videos: true
+  related_videos: false
 
 
   # -----------------------------
