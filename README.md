@@ -389,6 +389,37 @@ Then launch the docker:
 docker compose up -d
 ```
 
+### Invidious
+Create the `.env` from the example:
+```
+cp .env.default .env
+```
+
+Update the important values:
+- `HMAC_KEY`: generate a password
+- `INVIDIOUS_COMPANION_KEY`: generate a password
+
+In the domain manager, add a line:
+
+| Sub-domain | TTL  | Type | Value        |
+| ---------- | ---- | ---- | ------------ |
+| inv        | 3600 | A    | [Server IP]  |
+
+
+In the nginx proxy manager, add a *proxy host*:
+```
+Domain name: inv.domain.tld
+Scheme: http
+Forward Hostname / IP: invidious
+Forward Port: 5432
+SSL Certificate (SSL tab): request a new certificate
+```
+
+Then launch the docker:
+```
+docker compose up -d
+```
+
 ## Setup email
 I am going to use [docker-mailserver](https://github.com/docker-mailserver/docker-mailserver) (DMS).
 
