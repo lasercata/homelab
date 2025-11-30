@@ -16,71 +16,112 @@
 # Avoid the -v (verbose) parameter as it flood the error messages.
 
 # ====== Init ======
-services_folders=$(ls composes/)
 date_prefix=$(date +'%Y-%m-%d_%H:%M')
 
-mkdir backups/
+[[ -d backups/ ]] || mkdir backups/
 
-# ====== ./volumes ======
-echo "====== ./volumes ======"
+# ====== Utils ======
+# ------ delete_firsts ------
+## This function aims to keep at most `n` files in the target folder.
+# It remove the first files (from ls order). This is to keep only the most
+# recent ones assuming they are correctly named.
+#
+# @param $1 - folder: the folder in which delete the `N - n` first files
+# @param $2 - n: the number of files to keep
+delete_firsts() {
+    cd $1
+    nb_files=$(ls | wc -l)
+    nb_max=$2
 
-#---Docker compose down every service
-# First save which container is running
-running_services=$(docker ps --format '{{.Names}}')
+    while [ $nb_files -gt $nb_max ]; do
+        rm $(ls | head -n 1)
+        nb_files=$(ls | wc -l)
+    done
 
-# Then down each
-echo
-echo "Stopping the services..."
-echo
-cd composes/
-for service in $services_folders; do
-    cd "$service"
+    cd -
+}
 
-    echo "In folder '$service':"
-    if [[ $running_services =~ "$service" ]]; then
-        echo "stopping it"
-        docker compose down
-    else
-        echo "is not running"
-    fi
+# ====== Backup functions ======
+# ------ ./volumes ------
+backup_volumes() {
+    echo "====== ./volumes ======"
 
+    #---Init
+    services_folders=$(ls composes/)
+
+    #---Docker compose down every service
+    # First save which container is running
+    running_services=$(docker ps --format '{{.Names}}')
+
+    # Then down each
+    echo
+    echo "Stopping the services..."
+    echo
+    cd composes/
+    for service in $services_folders; do
+        cd "$service"
+
+        echo "In folder '$service':"
+        if [[ $running_services =~ "$service" ]]; then
+            echo "stopping it"
+            docker compose down
+        else
+            echo "is not running"
+        fi
+
+        cd ..
+    done
     cd ..
-done
-cd ..
 
-#---Tar
-sudo tar -czf backups/"$date_prefix"_volumes.tar.gz volumes/
+    #---Tar
+    sudo tar -czf backups/"$date_prefix"_volumes.tar.gz volumes/
 
-#---Docker compose up
-echo
-echo "Relaunching the services..."
-echo
-cd composes/
-for service in $services_folders; do
-    cd "$service"
+    #---Docker compose up
+    echo
+    echo "Relaunching the services..."
+    echo
+    cd composes/
+    for service in $services_folders; do
+        cd "$service"
 
-    echo "In folder '$service':"
-    if [[ $running_services =~ "$service" ]]; then
-        echo "relaunching it"
-        docker compose up -d
-    else
-        echo "was not running"
-    fi
+        echo "In folder '$service':"
+        if [[ $running_services =~ "$service" ]]; then
+            echo "relaunching it"
+            docker compose up -d
+        else
+            echo "was not running"
+        fi
 
+        cd ..
+    done
     cd ..
-done
-cd ..
+}
 
-# ====== ./composes/**/.env ======
-echo
-echo "====== ./composes/**/.env ======"
-echo
+# ------ ./composes/**/.env ------
+backup_env() {
+    echo
+    echo "====== ./composes/**/.env ======"
+    echo
 
-tar -czf backups/"$date_prefix"_env.tar.gz composes/**/.env
+    tar -czf backups/"$date_prefix"_env.tar.gz composes/**/.env
+}
 
-# ====== /home/admin ======
-echo
-echo "====== /home/admin ======"
-echo
+# ------ /home/admin ------
+backup_home() {
+    echo
+    echo "====== /home/admin ======"
+    echo
 
-tar -czf backups/"$date_prefix"_home.tar.gz /home/admin
+    tar -czf backups/"$date_prefix"_home.tar.gz /home/admin
+}
+
+# ====== Main ======
+# ------ Backup all ------ 
+backup_env
+backup_home
+backup_volumes
+
+# ------ Keep only last 3 backups (remove all the previous ones) ------ 
+# Note: one backup is 3 tar files => we keep the 9 last files
+delete_firsts 'backups/' '9'
+

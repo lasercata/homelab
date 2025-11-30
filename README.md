@@ -449,14 +449,14 @@ Run:
 docker exec -ti <CONTAINER NAME> setup email add user@domain.tld
 ```
 
-- Add a least one alias (by convention the *podmaster alias*):
+- Add a least one alias (by convention the *postmaster alias*):
 ```
-docker exec -ti <CONTAINER NAME> setup alias add postmaster@example.com user@example.com
+docker exec -ti <CONTAINER NAME> setup alias add postmaster@domain.tld user@domain.tld
 ```
 
 - To forward emails sent to inexistant users to admin: 
 ```
-docker exec -ti <CONTAINER NAME> setup alias add @example.com admin@example.com
+docker exec -ti <CONTAINER NAME> setup alias add @domain.tld admin@domain.tld
 ```
 But this will forward all emails to the admin... (even for existing accounts)
 
@@ -529,6 +529,12 @@ From your machine, retrieve the archives using `scp`:
 ```bash
 # Assuming you used ~/.ssh/config to setup Port, User and IdentityFile
 scp domain.tld:/srv/docker/backups .
+```
+
+Or to keep a mirror of the `backups/` folder on your machine, use `rsync`:
+```
+# Assuming you used ~/.ssh/config to setup Port, User and IdentityFile
+rsync -vhP domain.tld:/srv/docker/backups/ backups/
 ```
 
 #### Restore (when needed)
