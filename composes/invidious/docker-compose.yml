@@ -9,6 +9,7 @@ services:
 
     networks:
       - docker-network
+      - invidious-network
 
     environment:
       # Please read the following file for a comprehensive list of all available
@@ -36,7 +37,7 @@ services:
         # Use the key generated in the 2nd step
         hmac_key: ${HMAC_KEY}
     healthcheck:
-      test: wget -nv --tries=1 --spider http://127.0.0.1:3005/api/v1/stats || exit 1
+      test: wget -nv --tries=1 --spider http://127.0.0.1:3000/api/v1/stats || exit 1
       interval: 30s
       timeout: 5s
       retries: 2
@@ -50,6 +51,9 @@ services:
   companion:
     image: quay.io/invidious/invidious-companion:latest
     restart: unless-stopped
+
+    networks:
+      - invidious-network
 
     environment:
     # Use the key generated in the 2nd step
@@ -78,6 +82,9 @@ services:
     image: docker.io/library/postgres:14
     restart: unless-stopped
 
+    networks:
+      - invidious-network
+
     volumes:
       - /srv/docker/volumes/invidious/postgresdata:/var/lib/postgresql/data
       - /srv/docker/volumes/invidious/config/sql:/config/sql
@@ -94,3 +101,6 @@ services:
 networks:
   docker-network:
     external: true
+
+  invidious-network:
+    external: false

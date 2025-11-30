@@ -399,6 +399,8 @@ Update the important values:
 - `HMAC_KEY`: generate a password
 - `INVIDIOUS_COMPANION_KEY`: generate a password
 
+<!-- Update also the `HMAC_KEY` field in `config.yml`. -->
+
 In the domain manager, add a line:
 
 | Sub-domain | TTL  | Type | Value        |
