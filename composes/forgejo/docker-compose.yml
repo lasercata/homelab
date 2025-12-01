@@ -4,9 +4,9 @@ services:
     restart: unless-stopped
     container_name: forgejo
 
-    # ports:
-    #   - '3000:3000'
-    #   - '22:22'
+    ports:
+      # - '3000:3000'
+      - '22:22'
 
     networks:
       - docker-network
