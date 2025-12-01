@@ -4,9 +4,9 @@ services:
     restart: unless-stopped
     container_name: cryptpad
 
-    ports:
-      - '3001:3000'
-      - '3003:3003'
+    # ports:
+    #   - '3001:3000'
+    #   - '3003:3003'
 
     networks:
       - docker-network

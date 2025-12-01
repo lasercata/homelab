@@ -4,8 +4,8 @@ services:
     restart: unless-stopped
     container_name: invidious
 
-    ports:
-      - "127.0.0.1:3005:3000"
+    # ports:
+    #   - "127.0.0.1:3005:3000"
 
     networks:
       - docker-network

@@ -4,6 +4,9 @@ services:
     restart: unless-stopped
     container_name: ferrishare
 
+    # ports:
+    #   - 3000:3000
+
     networks:
       - docker-network
 

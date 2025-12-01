@@ -28,6 +28,11 @@ services:
       - /srv/docker/volumes/nginx-proxy-manager/data:/data
       - /srv/docker/volumes/nginx-proxy-manager/letsencrypt:/etc/letsencrypt
 
+    healthcheck:
+      test: ["CMD", "/usr/bin/check-health"]
+      interval: 10s
+      timeout: 3s
+
 networks:
   default:
     external: true

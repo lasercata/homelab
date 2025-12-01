@@ -4,8 +4,8 @@ services:
     restart: unless-stopped
     container_name: chhoto-url
 
-    ports:
-      - 4567:4567
+    # ports:
+    #   - 4567:4567
 
     networks:
       - docker-network
