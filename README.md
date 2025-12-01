@@ -448,6 +448,35 @@ Then launch the docker:
 docker compose up -d
 ```
 
+### ntop-ng
+Create the `.env` from the example:
+```
+cp .env.default .env
+```
+
+Update the important values:
+- `NTOPNG_PASS`: generate a password
+In the domain manager, add a line:
+
+| Sub-domain | TTL  | Type | Value        |
+| ---------- | ---- | ---- | ------------ |
+| ntop       | 3600 | A    | [Server IP]  |
+
+
+In the nginx proxy manager, add a *proxy host*:
+```
+Domain name: ntop.domain.tld
+Scheme: http
+Forward Hostname / IP: ntopng
+Forward Port: 3000
+SSL Certificate (SSL tab): request a new certificate
+```
+
+Then launch the docker:
+```
+docker compose up -d
+```
+
 ## Setup email
 I am going to use [docker-mailserver](https://github.com/docker-mailserver/docker-mailserver) (DMS).
 
