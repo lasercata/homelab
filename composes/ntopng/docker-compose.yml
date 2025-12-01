@@ -1,25 +1,54 @@
 services:
   ntopng:
-    image: ntop/ntopng:community
+    image: ntop/ntopng:latest
     restart: unless-stopped
     container_name: ntopng
 
-    ports:
-      - "3006:3000"  # Web interface port
-      # - "3001:3001"  # Flow data (optional)
+    # 'redis:6379': 'redis' is the ip of the redis service defined below, 6379 is the port.
+    command: --community -i eth0 --redis redis:6379
+
+    security_opt:
+      - no-new-privileges:true
 
     networks:
       - docker-network
+      - ntopng-net
 
     environment:
-      - NTOPNG_USER=${NTOPNG_USER}
-      - NTOPNG_PASS=${NTOPNG_PASS}
-      - NTOPNG_HOST=0.0.0.0              # Listen on all interfaces
-      - NTOPNG_INTERFACE=all              # Monitor all interfaces
+       PUID: 1026
+       PGID: 100
 
     volumes:
-      - /srv/docker/volumes/ntopng/ntopng_data:/var/lib/ntopng
+      - /srv/docker/volumes/ntopng/ntopng_data:/var/lib/ntopng:rw
+
+    healthcheck:
+      test: timeout 10s bash -c ':> /dev/tcp/127.0.0.1/3000' || exit 1
+      interval: 10s
+      timeout: 5s
+      retries: 3
+      start_period: 90s
+
+    depends_on:
+      - redis
+
+  redis:
+    image: redis:7-alpine
+    restart: unless-stopped
+    container_name: ntopng-redis
+
+    command: redis-server --appendonly yes --appendfsync everysec --dir /data
+
+    ports:
+      - "6379:6379"
+
+    networks:
+      - ntopng-net
+
+    volumes:
+      - /srv/docker/volumes/ntopng/ntopng_redis:/data:rw
 
 networks:
   docker-network:
     external: true
+  ntopng-net:
+    external: false

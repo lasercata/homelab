@@ -449,16 +449,6 @@ docker compose up -d
 ```
 
 ### ntop-ng
-Create the `.env` from the example:
-```
-cp .env.default .env
-```
-
-Update the important values:
-- `NTOPNG_PASS`: generate a password
-
-Note: this might not work. In this case, the default username/password are `admin/admin`, and the web interface will ask to change after first login.
-
 In the domain manager, add a line:
 
 | Sub-domain | TTL  | Type | Value        |
@@ -479,6 +469,8 @@ Then launch the docker:
 ```
 docker compose up -d
 ```
+
+Note: The default username/password are `admin/admin`, and the web interface will ask to change after first login.
 
 ## Setup email
 I am going to use [docker-mailserver](https://github.com/docker-mailserver/docker-mailserver) (DMS).
