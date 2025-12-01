@@ -5,14 +5,16 @@ services:
     container_name: ntopng
 
     # 'redis:6379': 'redis' is the ip of the redis service defined below, 6379 is the port.
-    command: --community -i eth0 --redis redis:6379
+    # command: --community -i eth0 --redis redis:6379
+    command: --community -i eth0 --redis 127.0.0.1:6379
 
     security_opt:
       - no-new-privileges:true
 
-    networks:
-      - docker-network
-      - ntopng-net
+    network_mode: host
+    # networks:
+    #   - docker-network
+    #   - ntopng-net
 
     environment:
        PUID: 1026
@@ -38,17 +40,18 @@ services:
 
     command: redis-server --appendonly yes --appendfsync everysec --dir /data
 
-    ports:
-      - "6379:6379"
+    # ports:
+    #   - "6379:6379"
 
-    networks:
-      - ntopng-net
+    network_mode: host
+    # networks:
+    #   - ntopng-net
 
     volumes:
       - /srv/docker/volumes/ntopng/ntopng_redis:/data:rw
 
-networks:
-  docker-network:
-    external: true
-  ntopng-net:
-    external: false
+# networks:
+#   docker-network:
+#     external: true
+#   ntopng-net:
+#     external: false
