@@ -1,6 +1,6 @@
 services:
   ntopng:
-    image: ntop/ntopng:latest
+    image: ntop/ntopng:community
     restart: unless-stopped
     container_name: ntopng
 

@@ -456,6 +456,9 @@ cp .env.default .env
 
 Update the important values:
 - `NTOPNG_PASS`: generate a password
+
+Note: this might not work. In this case, the default username/password are `admin/admin`, and the web interface will ask to change after first login.
+
 In the domain manager, add a line:
 
 | Sub-domain | TTL  | Type | Value        |
