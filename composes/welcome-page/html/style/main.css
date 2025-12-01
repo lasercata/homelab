@@ -24,6 +24,10 @@ body {
     color: white;
 }
 
+/* h1 { */
+/*     font-size: 2em; */
+/* } */
+
 .center {
     margin: auto;
     width: 80%;
@@ -31,7 +35,7 @@ body {
     text-align: center;
 }
 
-#content {
+.content {
     flex: 1; /* Expand and push the footer to the bottom */
     padding: 20px;
 }
@@ -53,7 +57,7 @@ body {
     color: var(--lasercata-dark-orange-color);
 }
 
-#button-container {
+.button-container {
     text-align: center;
     margin-top: 20px;
 }
@@ -61,6 +65,7 @@ body {
     display: flex;
     flex-direction: row;
     gap: 10px;
+    justify-content: center
 
     /* display: grid; */
     /* grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); */
@@ -131,5 +136,9 @@ body {
         display: flex;
         flex-direction: column;
         gap: 10px;
+    }
+
+    h1 {
+        font-size: 10vw;
     }
 }
