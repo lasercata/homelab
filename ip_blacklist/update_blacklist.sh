@@ -21,6 +21,7 @@ sudo ipset -q create blacklist hash:net
 # Populate the ipset list
 echo "Populating the ipset list"
 for ip in $IPsum_IPs $Spamhaus_IPs; do
+    echo "Adding $ip ..."
     sudo ipset add blacklist $ip
 done
 
