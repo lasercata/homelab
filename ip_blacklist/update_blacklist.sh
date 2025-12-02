@@ -4,6 +4,7 @@
 # Run this as root (sudo is used anyway)
 
 # ====== Init ======
+echo "Downloading IP lists"
 IPsum_source="https://raw.githubusercontent.com/stamparm/ipsum/master/ipsum.txt"
 IPsum_IPs=$(curl --compressed "$IPsum_source" 2> /dev/null | grep -v "#" | grep -v -E "\\s[1-2]$" | cut -f 1)
 
@@ -13,15 +14,18 @@ Spamhaus_IPs=$(curl --compressed "$Spamhaus_source" 2> /dev/null | cut -d ';' -f
 
 # ====== ipset ======
 # Flush and recreate the ipset list `blacklist`
+echo "Recreating the ipset list"
 sudo ipset -q flush blacklist
 sudo ipset -q create blacklist hash:net
 
 # Populate the ipset list
+echo "Populating the ipset list"
 for ip in $IPsum_IPs $Spamhaus_IPs; do
     sudo ipset add blacklist $ip
 done
 
 # ====== iptables ======
+echo "Adding the iptable rule"
 ! sudo iptables -C INPUT -m set --match-set blacklist src -j DROP 2>/dev/null && \
 sudo iptables -I INPUT -m set --match-set blacklist src -j DROP   
 
