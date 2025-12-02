@@ -656,3 +656,18 @@ $ sudo crontab -e
 # Add the line:
 # 30 3 * * * cd /srv/docker && ./backup.sh
 ```
+
+## Blacklist
+TODO
+
+The script takes around 12 minutes to run (~ 21200 + 1500 IPs to populate)
+Idea: use a cron job to update the blacklist.
+
+TODO: for the moment there is something weird:
+- I still get notifications from `ntop` ;
+- The IPs from the notifications are most of the time included in the blacklist (`_ ipset test blacklist [IP]`) ;
+- `iptables` does *not* log the IP (neither with the specific rule or a generic rule that logs all INPUT) ;
+- `tcpdump` can often see the IP (`_ tcpdump -i eth0 > tmp.logs` logs: IP > serv [S] ; serv > IP [S.] ; IP > serv [R] = probably scanning?).
+
+How is it possible that both `tcpdump` and `ntop` see the connection but not `iptables`?
+

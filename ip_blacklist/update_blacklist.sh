@@ -30,4 +30,8 @@ echo "Adding the iptable rule"
 ! sudo iptables -C INPUT -m set --match-set blacklist src -j DROP 2>/dev/null && \
 sudo iptables -I INPUT -m set --match-set blacklist src -j DROP   
 
+echo "Adding the iptable log rule"
+! sudo iptables -C INPUT -m set --match-set blacklist src -j LOG --log-prefix "iptables: BLACKLIST" --log-level 7 2> /dev/null && \
+sudo iptables -I INPUT -m set --match-set blacklist src -j LOG --log-prefix "iptables: BLACKLIST" --log-level 7
+
 
