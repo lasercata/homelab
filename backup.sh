@@ -34,6 +34,7 @@ delete_firsts() {
     nb_max=$2
 
     while [ $nb_files -gt $nb_max ]; do
+        echo "Deleting $(ls | head -n 1) ..."
         rm $(ls | head -n 1)
         nb_files=$(ls | wc -l)
     done
@@ -124,6 +125,6 @@ backup_volumes
 
 # ------ Keep only last 3 backups (remove all the previous ones) ------ 
 # Note: one backup is 3 tar files => we keep the 9 last files
-echo "------ Deleting old backups (if applicable) ------"
+echo "------ Deleting old backups (if applicable, keep last 3) ------"
 delete_firsts 'backups/' '9'
 
