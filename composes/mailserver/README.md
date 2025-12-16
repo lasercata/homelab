@@ -7,7 +7,7 @@ I am going to use [docker-mailserver](https://github.com/docker-mailserver/docke
 | mail       | 3600 | A    | [Server IP]         |
 | @          | 3600 | MX   | 10 mail.domain.tld. |
 
-[SPF](#SPF), [DKIM][#DKIM], & [DMARC](#DMARC): see the corresponding sections.
+[SPF](#spf), [DKIM](#dkim), & [DMARC](#dmarc): see the corresponding sections.
 
 ## Server PTR
 Configure the `PTR` field (reverse DNS record) to `mail.domain.tld`
