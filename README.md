@@ -565,6 +565,15 @@ But this will forward all emails to the admin... (even for existing accounts)
 docker exec -ti <CONTAINER NAME> setup alias list
 ```
 
+### SPF
+Sender Policy Framework (SPF) is a simple email-validation system designed to detect email spoofing by providing a mechanism to allow receiving mail exchangers to check that incoming mail from a domain comes from a host authorized by that domain's administrators (source: Wikipedia).
+
+Also only needed to add a DNS TXT value:
+
+| Sub-domain    | TTL  | Type | Value            |
+| ------------- | ---- | ---- | ---------------- |
+| `domain.tld.` | 3600 | TXT  | `v=spf1 mx ~all` |
+
 ### DKIM
 DomainKeys Identified Mail (DKIM) is an email authentication method designed to detect forged sender addresses in email (email spoofing), a technique often used in phishing and email spam (source: Wikipedia).
 
@@ -601,14 +610,18 @@ Only need to add a DNS TXT value:
 
 Please make sure to change the email addresses.
 
-### SPF
-Sender Policy Framework (SPF) is a simple email-validation system designed to detect email spoofing by providing a mechanism to allow receiving mail exchangers to check that incoming mail from a domain comes from a host authorized by that domain's administrators (source: Wikipedia).
+Info from protonmail:
+> The `p=` value specifies the action to take for emails that fail DMARC. The default setting is none. This basically means even if an email fails SPF or DKIM, your server will still accept the email as usual. However, to improve your security we recommend setting this value to `p=quarantine`, which tells the receiving server to send failed emails to the spam folder.
+> 
+> Once you are confident that your legitimate emails are passing DMARC, you may want to set it even more aggressively to `p=reject`. This tells the receiving server to not accept failed emails. We recommend using `p=reject` if you think you are likely to be a target for email spoofing. For example, Yahoo, PayPal, and eBay use `p=reject` to prevent spammers from impersonating them.
 
-Also only needed to add a DNS TXT value:
+The `sp` tag is for subdomains.
+It works like the `p` tag.
+By default, the subdomains inherits from the main domain's `p` tag (unless `sp` is set).
 
-| Sub-domain    | TTL  | Type | Value            |
-| ------------- | ---- | ---- | ---------------- |
-| `domain.tld.` | 3600 | TXT  | `v=spf1 mx ~all` |
+Current values: `p=quarantine, sp=reject`.
+
+Note: nice tool to aggregate the DMARC reports: `dmarc-report-converter`.
 
 ## Backups
 ### Data to backup
