@@ -1,0 +1,41 @@
+services:
+  wordpress:
+    image: wordpress
+    restart: unless-stopped
+    container_name: wordpress
+
+    # ports:
+    #   - "${wordpress_port}:80"
+
+    networks:
+      - docker-network
+
+    environment:
+      WORDPRESS_DB_HOST: db
+      WORDPRESS_DB_USER: ${db_username}
+      WORDPRESS_DB_PASSWORD: ${db_user_password}
+      WORDPRESS_DB_NAME: ${db_name}
+
+    volumes:
+      - /srv/docker/volumes/wordpress/data:/var/www/html
+
+    depends_on:
+      - wordpress-db
+
+  wordpress-db:
+    image: mysql:8.0
+    restart: unless-stopped
+    container_name: wordpress-db
+
+    environment:
+      MYSQL_DATABASE: ${db_name}
+      MYSQL_USER: ${db_username}
+      MYSQL_PASSWORD: ${db_user_password}
+      MYSQL_RANDOM_ROOT_PASSWORD: ${db_random_root_password}
+
+    volumes:
+      - /srv/docker/volumes/wordpress/db:/var/lib/mysql
+
+networks:
+  docker-network:
+    external: true
