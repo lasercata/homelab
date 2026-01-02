@@ -9,6 +9,7 @@ services:
 
     networks:
       - docker-network
+      - wordpress-network
 
     environment:
       WORDPRESS_DB_HOST: db
@@ -27,6 +28,9 @@ services:
     restart: unless-stopped
     container_name: wordpress-db
 
+    networks:
+      - wordpress-network
+
     environment:
       MYSQL_DATABASE: ${db_name}
       MYSQL_USER: ${db_username}
@@ -39,3 +43,5 @@ services:
 networks:
   docker-network:
     external: true
+  wordpress-network:
+    external: false
