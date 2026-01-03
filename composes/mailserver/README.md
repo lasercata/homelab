@@ -101,7 +101,8 @@ docker exec -it <CONTAINER NAME> setup config dkim
 ```
 And then restart your instance.
 
-This should have generated a `mail.txt` file.
+This should have generated a `mail.txt` file per domain.
+Location: `/srv/docker/volumes/mail/docker-data/dms/config/opendkim/keys/<domain.tld>/mail.txt`.
 
 Then, configure the DNS accordingly:
 
