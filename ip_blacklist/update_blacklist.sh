@@ -26,12 +26,23 @@ for ip in $IPsum_IPs $Spamhaus_IPs; do
 done
 
 # ====== iptables ======
-echo "Adding the iptable rule"
+# Adding the rule into iptables, into the chain 'DOCKER-USER', because
+# Docker apparently creates a jump from the FORWARD to DOCKER-USER, that
+# is used for all container-based traffic
+echo "Adding the iptable rule (DOCKER-USER)"
+! sudo iptables -C DOCKER-USER -m set --match-set blacklist src -j DROP 2>/dev/null && \
+sudo iptables -I DOCKER-USER -m set --match-set blacklist src -j DROP
+
+echo "Adding the iptable log rule (DOCKER-USER)"
+! sudo iptables -C DOCKER-USER -m set --match-set blacklist src -j LOG --log-prefix "iptables: BLACKLIST: docker-user" --log-level 7 2> /dev/null && \
+sudo iptables -I DOCKER-USER -m set --match-set blacklist src -j LOG --log-prefix "iptables: BLACKLIST: docker-user" --log-level 7
+
+# Also adding the rule to INPUT (just in case)
+echo "Adding the iptable rule (INPUT)"
 ! sudo iptables -C INPUT -m set --match-set blacklist src -j DROP 2>/dev/null && \
-sudo iptables -I INPUT -m set --match-set blacklist src -j DROP   
+sudo iptables -I INPUT -m set --match-set blacklist src -j DROP
 
-echo "Adding the iptable log rule"
-! sudo iptables -C INPUT -m set --match-set blacklist src -j LOG --log-prefix "iptables: BLACKLIST" --log-level 7 2> /dev/null && \
-sudo iptables -I INPUT -m set --match-set blacklist src -j LOG --log-prefix "iptables: BLACKLIST" --log-level 7
-
+echo "Adding the iptable log rule (INPUT)"
+! sudo iptables -C INPUT -m set --match-set blacklist src -j LOG --log-prefix "iptables: BLACKLIST: input" --log-level 7 2> /dev/null && \
+sudo iptables -I INPUT -m set --match-set blacklist src -j LOG --log-prefix "iptables: BLACKLIST: input" --log-level 7
 
