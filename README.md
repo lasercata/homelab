@@ -190,16 +190,39 @@ $ sudo crontab -e
 ```
 
 ## Blacklist
-TODO
+See the script `scripts/update_blacklist.sh` for details.
 
+### Script details
+#### Steps
+The scripts download bad IP lists from [`IPsum`](https://github.com/stamparm/ipsum/) and [`spamhaus`](https://www.spamhaus.org/).
+
+Then it creates and populates (or flush and populate again) an `ipset` list with those IPs.
+
+This `ipset` list is then used in `iptables` to drop all traffic from these IPs.
+
+#### Notes
+- As I use docker containers, the traffic does not pass through the `INPUT`chain, but through the `DOCKER-USER` one.
+
+- To test if an IP is in the blacklist:
+```
+sudo ipset test blacklist [IP]
+```
+
+### Cron job
 The script takes around 12 minutes to run (~ 21200 + 1500 IPs to populate)
-Idea: use a cron job to update the blacklist.
 
-TODO: for the moment there is something weird:
-- I still get notifications from `ntop` ;
-- The IPs from the notifications are most of the time included in the blacklist (`_ ipset test blacklist [IP]`) ;
-- `iptables` does *not* log the IP (neither with the specific rule or a generic rule that logs all INPUT) ;
-- `tcpdump` can often see the IP (`_ tcpdump -i eth0 > tmp.logs` logs: IP > serv [S] ; serv > IP [S.] ; IP > serv [R] = probably scanning?).
+To add a job to run every day at 3:00 a.m, as root:
+```
+$ sudo crontab -e
 
-How is it possible that both `tcpdump` and `ntop` see the connection but not `iptables`?
+# Add the line:
+# 0 3 * * * cd /srv/docker/scripts/ && ./update_blacklist.sh
+```
+
+### Logs
+The logs on my system are stored in the file `/var/log/kern.log`.
+With the prefix in the rule, you can grep:
+```
+sudo grep "iptables: BLACKLIST" /var/log/kern.log | bat
+```
 

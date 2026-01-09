@@ -52,7 +52,7 @@ Add a user cron job that runs `./renew_mail_cert.sh`:
 $ crontab -e
 
 # Add the line:
-# 0 3 * * * cd /srv/docker && ./renew_mail_cert.sh
+# 0 3 * * * cd /srv/docker/scripts/ && ./renew_mail_cert.sh
 ```
 
 ### Deploy
