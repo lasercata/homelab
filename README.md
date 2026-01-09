@@ -208,8 +208,10 @@ This `ipset` list is then used in `iptables` to drop all traffic from these IPs.
 sudo ipset test blacklist [IP]
 ```
 
+- `notopng` reads the packets *before* they are dropped by `iptables`.
+
 ### Cron job
-The script takes around 12 minutes to run (~ 21200 + 1500 IPs to populate)
+The script takes around 12 minutes to run (~ 21200 + 1500 IPs to populate; with IPsum >= 3, now it uses IPsum >= 2, so ~43000 + 1500 IPs, so probably two times longer)
 
 To add a job to run every day at 3:00 a.m, as root:
 ```
@@ -225,4 +227,6 @@ With the prefix in the rule, you can grep:
 ```
 sudo grep "iptables: BLACKLIST" /var/log/kern.log | bat
 ```
+
+I deactivated the logs in order to save memory.
 

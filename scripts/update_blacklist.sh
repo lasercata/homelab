@@ -6,7 +6,11 @@
 # ====== Init ======
 echo "Downloading IP lists"
 IPsum_source="https://raw.githubusercontent.com/stamparm/ipsum/master/ipsum.txt"
-IPsum_IPs=$(curl --compressed "$IPsum_source" 2> /dev/null | grep -v "#" | grep -v -E "\\s[1-2]$" | cut -f 1)
+# # This one removes the ones that have only 1 or 2 number of blacklists
+# IPsum_IPs=$(curl --compressed "$IPsum_source" 2> /dev/null | grep -v "#" | grep -v -E "\\s[1-2]$" | cut -f 1)
+
+# This one removes the ones that have only 1 number of blacklists
+IPsum_IPs=$(curl --compressed "$IPsum_source" 2> /dev/null | grep -v "#" | grep -v -E "\\s1$" | cut -f 1)
 
 Spamhaus_source="https://www.spamhaus.org/drop/drop.txt"
 Spamhaus_IPs=$(curl --compressed "$Spamhaus_source" 2> /dev/null | cut -d ';' -f 1 | grep " ")
@@ -33,16 +37,16 @@ echo "Adding the iptable rule (DOCKER-USER)"
 ! sudo iptables -C DOCKER-USER -m set --match-set blacklist src -j DROP 2>/dev/null && \
 sudo iptables -I DOCKER-USER -m set --match-set blacklist src -j DROP
 
-echo "Adding the iptable log rule (DOCKER-USER)"
-! sudo iptables -C DOCKER-USER -m set --match-set blacklist src -j LOG --log-prefix "iptables: BLACKLIST: docker-user" --log-level 7 2> /dev/null && \
-sudo iptables -I DOCKER-USER -m set --match-set blacklist src -j LOG --log-prefix "iptables: BLACKLIST: docker-user" --log-level 7
+# echo "Adding the iptable log rule (DOCKER-USER)"
+# ! sudo iptables -C DOCKER-USER -m set --match-set blacklist src -j LOG --log-prefix "iptables: BLACKLIST: docker-user" --log-level 7 2> /dev/null && \
+# sudo iptables -I DOCKER-USER -m set --match-set blacklist src -j LOG --log-prefix "iptables: BLACKLIST: docker-user" --log-level 7
 
 # Also adding the rule to INPUT (just in case)
 echo "Adding the iptable rule (INPUT)"
 ! sudo iptables -C INPUT -m set --match-set blacklist src -j DROP 2>/dev/null && \
 sudo iptables -I INPUT -m set --match-set blacklist src -j DROP
 
-echo "Adding the iptable log rule (INPUT)"
-! sudo iptables -C INPUT -m set --match-set blacklist src -j LOG --log-prefix "iptables: BLACKLIST: input" --log-level 7 2> /dev/null && \
-sudo iptables -I INPUT -m set --match-set blacklist src -j LOG --log-prefix "iptables: BLACKLIST: input" --log-level 7
+# echo "Adding the iptable log rule (INPUT)"
+# ! sudo iptables -C INPUT -m set --match-set blacklist src -j LOG --log-prefix "iptables: BLACKLIST: input" --log-level 7 2> /dev/null && \
+# sudo iptables -I INPUT -m set --match-set blacklist src -j LOG --log-prefix "iptables: BLACKLIST: input" --log-level 7
 
