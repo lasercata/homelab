@@ -30,7 +30,7 @@ delete_firsts() {
 [[ -d "$backups_pull_folder" ]] || mkdir "$backups_pull_folder"
 
 echo "------ Syncing from server (rsync) ------"
-rsync -rvhP "$domain":/srv/docker/backups/ "$backups_pull_folder"
+rsync -rvhP "$domain":/srv/docker/backups/ "$backups_pull_folder" || exit
 
 echo "------ Deleting old backups (keep last 5) ------"
 delete_firsts "$backups_pull_folder" '15'
