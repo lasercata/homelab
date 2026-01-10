@@ -140,7 +140,7 @@ Start with `nginx-proxy-manager`.
 
 
 ## Setup email
-For details on how to setup an e-mail server using `docker-mailserver`, please look at [`composes/mailserver/README.md`](composes/mailserver/README.md)
+For details on how to setup an e-mail server using `docker-mailserver`, please look at [`composes/mailserver/README.md`](composes/mailserver/README.md).
 
 ## Backups
 ### Data to backup
@@ -190,5 +190,10 @@ $ sudo crontab -e
 ```
 
 ## Blacklist
-For details on the IP blacklist script, please look at [`scripts/blacklist/README.md`](scripts/blacklist/README.md)
+For details on the IP blacklist script, please look at [`scripts/blacklist/README.md`](scripts/blacklist/README.md).
+
+## Discord notification (crontab)
+For details on the discorder script, please look at [`scripts/discorder/README.md`](scripts/discorder/README.md).
+
+This script is used by the others to send a notification when they are successful.
 
