@@ -11,20 +11,19 @@ cp .env.example .env
 ```
 And set the URL of the webhook to the `WEBHOOK_URL` variable.
 
-## Make it usable
-For the moment, it can only be called from the folder `scripts/discorder/`.
-
-So run (as root) the script `make_global.sh` that creates a bash file `/bin/discorder`:
+## Create a symlink
+For convenience, create a global symbolic link:
 ```
-cd scripts/discorder/discorder.sh
-sudo ./make_global.sh
+sudo ln -s /absolute/path/to/scripts/discorder/discorder.sh /bin/discorder
 ```
-
-**Make sure to be in the same folder** to run the script (e.g do *not* run `./scripts/discorder/make_global.sh`, this will not work).
 
 ## Usage
 Usage:
 ```
 discorder "bot username" "message content"
+# Or
+echo "message" | discorder "bot username"
+# Or
+echo "message" | discorder "bot username" "message title"
 ```
 
