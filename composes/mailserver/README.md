@@ -53,6 +53,9 @@ $ crontab -e
 
 # Add the line:
 # 0 3 * * * cd /srv/docker/scripts/mail_cert/ && ./renew_mail_cert.sh
+
+# Or, with discorder:
+# 0 3 * * * cd /srv/docker/scripts/mail_cert/ && ./renew_mail_cert.sh | discorder "mail_cert_renew" "Mail certificate renewer finished"
 ```
 
 ### Deploy

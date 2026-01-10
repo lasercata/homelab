@@ -28,6 +28,9 @@ $ sudo crontab -e
 
 # Add the line:
 # 0 3 * * * cd /srv/docker/scripts/blacklist/ && ./update_blacklist.sh
+
+# Or, with discorder:
+# 0 3 * * * cd /srv/docker/scripts/blacklist/ && ./update_blacklist.sh && discorder "update_blacklist" "Blacklist update finished"
 ```
 
 ## Logs
