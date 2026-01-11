@@ -27,7 +27,8 @@ msg="$2"
 
 # Read from stdin only if piped
 if [ ! -t 0 ]; then
-    read msg_pipe
+    # read msg_pipe
+    msg_pipe=$(cat)
 else
     msg_pipe=""
 fi
