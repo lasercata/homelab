@@ -13,12 +13,20 @@ source $ENV_PATH/.env || exit
 # Args:
 #   - $1: bot username
 #   - $2: message content
-#
+#   - $3: (optional) path to the file to attach (or "")
 post_message() {
-    curl -X POST \
-        -F "username=$1" \
-        -F "content=$2" \
-        "$WEBHOOK_URL"
+    if [ -z "$3" ]; then
+        curl -X POST \
+            -F "username=$1" \
+            -F "content=$2" \
+            "$WEBHOOK_URL"
+    else
+        curl -X POST \
+            -F "username=$1" \
+            -F "content=$2" \
+            -F "file1=@$3" \
+            "$WEBHOOK_URL"
+    fi
 }
 
 # Gets the arguments
@@ -27,11 +35,18 @@ msg="$2"
 
 # Read from stdin only if piped
 if [ ! -t 0 ]; then
-    # read msg_pipe
+    # Read the piped data
     msg_pipe=$(cat)
-else
-    msg_pipe=""
-fi
 
-post_message "$bot_name" "$msg
-$msg_pipe"
+    # Save it to tmp file
+    cat <<< "$msg_pipe" > /tmp/discorder.txt
+
+    # post message
+    post_message "$bot_name" "$msg" "/tmp/discorder.txt"
+
+    # Delete tmp file
+    rm /tmp/discorder.txt
+
+else
+    post_message "$bot_name" "$msg"
+fi

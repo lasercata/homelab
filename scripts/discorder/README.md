@@ -27,3 +27,5 @@ echo "message" | discorder "bot username"
 echo "message" | discorder "bot username" "message title"
 ```
 
+Note: the piped message is sent as a .txt attachment.
+
