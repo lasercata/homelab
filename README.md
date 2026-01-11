@@ -189,7 +189,7 @@ $ sudo crontab -e
 # 30 3 * * * cd /srv/docker && ./backup.sh
 
 # Or, with discorder:
-# 30 3 * * * cd /srv/docker && ./backup.sh | discorder "backup_cron" "# Backup $(date +'%Y-%m-%d')"
+# 30 3 * * * cd /srv/docker && ./backup.sh 2>&1 | discorder "backup_cron" "# Backup $(date +'%Y-%m-%d')"
 ```
 
 ## Blacklist
