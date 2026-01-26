@@ -32,3 +32,8 @@ Better: edit the file directly from the mounted volume, at `/srv/docker/volumes/
 And then relaunch the instance.
 
 
+## Configuration
+The configuration file is located at `/srv/docker/volumes/forgejo/gitea/conf/app.ini` (or `/data/gitea/conf/app.ini` inside the container).
+
+**It contains sensible data**, including the SMTP configuration.
+
