@@ -6,7 +6,8 @@ docker compose stop
 
 
 # ====== Renew cert if needed ======
-docker run --rm -it \
+# docker run --rm -it \ # Do not use -it (interactive, tty) to run with cron!
+docker run --rm \
   -v "/srv/docker/volumes/mail/certs/:/etc/letsencrypt/" \
   -v "/srv/docker/logs/mail/certs/:/var/log/letsencrypt/" \
   -p 80:80 \
