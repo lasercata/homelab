@@ -40,6 +40,6 @@ With the prefix in the rule, you can grep:
 sudo grep "iptables: BLACKLIST" /var/log/kern.log | bat
 ```
 
-I deactivated the logs in order to save memory.
+I deactivated the logs (iptables rule that was just logging) in order to save disk space.
 
 

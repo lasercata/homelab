@@ -1,4 +1,5 @@
 # Server configuration
+This repository contains the description of the infrastructure of my servers (based on docker-compose), with documentation.
 
 ## Server initialisation
 ### Register
@@ -50,11 +51,10 @@ Add rule:
 | Direction | Protocol | Source IP | Source port | Destination IP | Destination port |
 | --------- | -------- | --------- | ----------- | -------------- | ---------------- |
 | Inbound   | TCP      | any       | any         | [Server IP]    | [SSH port]       |
-| Inbound   |          |           |             |                |                  |
 
 ### Make it home
 #### Update
-On debian:
+On Debian:
 ```
 sudo apt update && sudo apt upgrade
 ```
