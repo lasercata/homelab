@@ -19,6 +19,7 @@
 date_prefix=$(date +'%Y-%m-%d_%H:%M')
 
 [[ -d backups/ ]] || mkdir backups/
+[[ -d backups/tmp/ ]] || mkdir backups/tmp/
 
 # ====== Utils ======
 # ------ delete_firsts ------
@@ -76,7 +77,7 @@ backup_volumes() {
 
     #---Tar
     echo "--------------------------- Archiving ./volumes (you might need to enter sudo password)"
-    sudo tar -czf backups/"$date_prefix"_volumes.tar.gz volumes/
+    sudo tar -czf backups/tmp/"$date_prefix"_volumes.tar.gz volumes/
 
     #---Docker compose up
     echo
@@ -105,7 +106,7 @@ backup_env() {
     echo "====== ./composes/**/.env ======"
     echo
 
-    tar -czf backups/"$date_prefix"_env.tar.gz composes/**/.env
+    tar -czf backups/tmp/"$date_prefix"_env.tar.gz composes/**/.env
 }
 
 # ------ /home/admin ------
@@ -114,7 +115,7 @@ backup_home() {
     echo "====== /home/admin ======"
     echo
 
-    tar -czf backups/"$date_prefix"_home.tar.gz /home/admin
+    tar -czf backups/tmp/"$date_prefix"_home.tar.gz /home/admin
 }
 
 # ====== Main ======
@@ -123,8 +124,11 @@ backup_env
 backup_home
 backup_volumes
 
-# ------ Keep only last 3 backups (remove all the previous ones) ------ 
-# Note: one backup is 3 tar files => we keep the 9 last files
-echo "------ Deleting old backups (if applicable, keep last 3) ------"
-delete_firsts 'backups/' '9'
+# Aggregate all tar in a single one
+tar -cf backups/"$date_prefix"_backup_all.tar backups/tmp/"$date_prefix"*.tar.gz
+rm backups/tmp/"$date_prefix"*.tar.gz
+
+# ------ Keep only last 5 backups (remove all the previous ones) ------ 
+echo "------ Deleting old backups (if applicable, keep last 5) ------"
+delete_firsts 'backups/' '5'
 

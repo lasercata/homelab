@@ -1,5 +1,9 @@
 # Server configuration
-This repository contains the description of the infrastructure of my servers (based on docker-compose), with documentation.
+This repository contains the description for the infrastructure on my servers (with documentation).
+
+I mainly use docker-compose to deploy services.
+
+Below is a description on how to start from scratch your homelab.
 
 ## Server initialisation
 ### Register
@@ -125,7 +129,7 @@ sudo chown admin:admin /srv/docker
 And then clone this very repository into `docker`:
 ```
 cd /srv/
-git clone ssh://git@codeberg.org/lasercata/VPS.git docker
+git clone ssh://git@codeberg.org/lasercata/homelab.git docker
 ```
 
 And create the missing folders:
