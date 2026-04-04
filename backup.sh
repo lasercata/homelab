@@ -127,6 +127,7 @@ backup_volumes
 # Aggregate all tar in a single one
 tar -cf backups/"$date_prefix"_backup_all.tar backups/tmp/"$date_prefix"*.tar.gz
 rm backups/tmp/"$date_prefix"*.tar.gz
+rm -d backups/tmp/
 
 # ------ Keep only last 5 backups (remove all the previous ones) ------ 
 echo "------ Deleting old backups (if applicable, keep last 5) ------"

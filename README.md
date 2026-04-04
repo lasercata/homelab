@@ -129,7 +129,7 @@ sudo chown admin:admin /srv/docker
 And then clone this very repository into `docker`:
 ```
 cd /srv/
-git clone ssh://git@codeberg.org/lasercata/homelab.git docker
+git clone https://codeberg.org/lasercata/homelab.git docker
 ```
 
 And create the missing folders:
