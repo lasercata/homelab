@@ -5,6 +5,8 @@ I mainly use docker-compose to deploy services.
 
 Below is a description on how to start from scratch your homelab.
 
+This repository contains submodules. Clone with `--recursive`.
+
 ## Server initialisation
 ### Register
 Register a domain name and buy a server / VPS.
@@ -129,7 +131,7 @@ sudo chown admin:admin /srv/docker
 And then clone this very repository into `docker`:
 ```
 cd /srv/
-git clone https://codeberg.org/lasercata/homelab.git docker
+git clone --recursive https://codeberg.org/lasercata/homelab.git docker
 ```
 
 And create the missing folders:

@@ -1,8 +1,10 @@
 logs/
 volumes/
 volumes_old/
+
 backups/
 backups_pull/
+backups_uploaded/
 
 *.tar.gz
 .env
