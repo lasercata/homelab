@@ -12,6 +12,12 @@ cp backup_upload_server/.env.example .env
 Update the important values:
 - `token`: change the token
 
+Create and chown the folder that will contain backups:
+```
+mkdir /srv/docker/backups_uploaded/
+chown 10001:10001 /srv/docker/backups_uploaded/
+```
+
 In the domain manager, add a line:
 
 | Sub-domain | TTL  | Type | Value        |

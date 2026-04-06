@@ -6,5 +6,6 @@ backups/
 backups_pull/
 backups_uploaded/
 
+TODO.txt
 *.tar.gz
 .env
