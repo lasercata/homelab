@@ -157,6 +157,18 @@ For details on how to setup an e-mail server using `docker-mailserver`, please l
 
 Note: when creating the backup, the corresponding volume should be down to ensure the data integrity.
 
+### Setup
+If you have multiple servers and want to use [backup upload server](https://git.lasercata.com/lasercata/backup_upload_server), then you can setup the file `scripts/.backup_secrets.sh`.
+
+If the file is not created, then the backup script will not attempt anything.
+
+Otherwise, set the URL and the token, and the tar will be sent there.
+
+To create it:
+```
+cp scripts/.backup_secrets.example.sh scripts/.backup_secrets.sh
+```
+
 ### How to backup
 #### Create the archives
 To create the archives, simply run the `backup.sh` script.

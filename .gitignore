@@ -9,3 +9,5 @@ backups_uploaded/
 TODO.txt
 *.tar.gz
 .env
+
+.backup_secrets.sh

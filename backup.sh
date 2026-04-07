@@ -40,6 +40,7 @@ delete_firsts() {
         nb_files=$(ls | wc -l)
     done
 
+    echo "(delete_firsts): cd back to"
     cd -
 }
 
@@ -132,4 +133,15 @@ rm -d backups/tmp/
 # ------ Keep only last 5 backups (remove all the previous ones) ------ 
 echo "------ Deleting old backups (if applicable, keep last 5) ------"
 delete_firsts 'backups/' '5'
+
+# ------ Send backups to homelab ------ 
+if [ -f "scripts/.backup_secrets.sh" ]; then
+    source scripts/.backup_secrets.sh
+
+    curl \
+        -X POST \
+        -H "Authorization: $BACKUP_TOKEN" \
+        -F "file=@backups/"$date_prefix"_backup_all.tar" \
+        $BACKUP_URL
+fi
 
