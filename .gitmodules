@@ -1,3 +1,3 @@
 [submodule "composes/backup_uploader/backup_upload_server"]
-	path = composes/backup_uploader/backup_upload_server
+	path = composes/backup-upload-server/backup_upload_server
 	url = https://git.lasercata.com/lasercata/backup_upload_server.git

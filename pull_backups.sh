@@ -23,6 +23,7 @@ delete_firsts() {
         nb_files=$(ls | wc -l)
     done
 
+    echo "(delete_firsts): cd back to"
     cd -
 }
 
