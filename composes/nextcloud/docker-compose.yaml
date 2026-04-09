@@ -1,0 +1,73 @@
+services:
+  nextcloud:
+    image: nextcloud:latest
+    restart: unless-stopped
+    container_name: nextcloud
+
+    expose:
+      - 80
+
+    networks:
+      - nextcloud-network
+      - docker-network
+
+    environment:
+      - PUID=${PUID}
+      - PGID=${PGID}
+
+      - MYSQL_DATABASE=${MYSQL_DATABASE}
+      - MYSQL_USER=${MYSQL_USER}
+      - MYSQL_PASSWORD=${MYSQL_PASSWORD}
+
+      - MYSQL_HOST=nextcloud-db
+      - REDIS_HOST=nextcloud-redis
+
+    volumes:
+      - /srv/docker/volumes/nextcloud/html:/var/www/html
+      - /srv/docker/volumes/nextcloud/custom_apps:/var/www/html/custom_apps
+      - /srv/docker/volumes/nextcloud/config:/var/www/html/config
+      - ${DATA_PATH}/data:/var/www/html/data
+
+    depends_on:
+      - nextcloud-db
+      - nextcloud-redis
+
+  nextcloud-db:
+    image: mariadb
+    restart: unless-stopped
+    container_name: nextcloud-db
+    command: --transaction-isolation=READ-COMMITTED --binlog-format=ROW
+
+    networks:
+      - nextcloud-network
+
+    environment:
+      - PUID=${PUID}
+      - PGID=${PGID}
+
+      - MYSQL_RANDOM_ROOT_PASSWORD=true
+      - MYSQL_DATABASE=${MYSQL_DATABASE}
+      - MYSQL_USER=${MYSQL_USER}
+      - MYSQL_PASSWORD=${MYSQL_PASSWORD}
+
+    volumes:
+      - /srv/docker/volumes/nextcloud/nextcloud-db:/var/lib/mysql
+
+  nextcloud-redis:
+    image: redis:alpine
+    restart: unless-stopped
+    container_name: nextcloud-redis
+
+    networks:
+      - nextcloud-network
+
+    volumes:
+      - /srv/docker/volumes/nextcloud/redis:/data
+
+networks:
+  nextcloud-network:
+    name: nextcloud-network
+    driver: bridge   
+
+  docker-network:
+    external: true
