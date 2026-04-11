@@ -208,6 +208,10 @@ $ sudo crontab -e
 
 # Or, with discorder:
 # 30 3 * * * cd /srv/docker && ./backup.sh 2>&1 | discorder "backup_cron" "# Backup $(date +'%Y-%m-%d')"
+
+# And to see the size:
+# 0  6  *  *  *  cd /srv/docker/backups; nl=$'\n'; discorder "backup_cron" "## Backups size ${nl} \`\`\`$(du -hs *)\`\`\`"
+# 2   0  6  *  *  *  cd /srv/docker/backups_uploaded; nl=$'\n'; discorder "backup_cron" "## Backups uploaded size ${nl} \`\`\`$(du -hs *)\`\`\`"
 ```
 
 ## Blacklist

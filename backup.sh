@@ -138,6 +138,8 @@ delete_firsts 'backups/' '5'
 if [ -f "scripts/.backup_secrets.sh" ]; then
     source scripts/.backup_secrets.sh
 
+    echo "Pushing backups to $BACKUP_URL"
+
     curl \
         -X POST \
         -H "Authorization: $BACKUP_TOKEN" \

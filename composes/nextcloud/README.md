@@ -31,4 +31,10 @@ Then launch the docker:
 ```
 docker compose up -d
 ```
+## Manually adding files
+You can manually add files into the mounted disk into a user folder.
 
+Just run this command after (replace `<username>`):
+```
+docker exec nextcloud php occ files:scan --path=<username>
+```
