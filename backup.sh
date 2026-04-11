@@ -1,9 +1,11 @@
 #!/usr/bin/env bash
 
 # This script creates a tar archive of the following paths:
-# - ./volumes/          backups/[date]_volumes.tar
-# - ./composes/**/.env  backups/[date]_env.tar
-# - /home/admin/        backups/[date]_home.tar
+# - ./volumes/          backups/self/[date]_volumes.tar.gz
+# - ./composes/**/.env  backups/self/[date]_env.tar.gz
+# - /home/admin/        backups/self/[date]_home.tar.gz
+#
+# The 3 tar files are then put together in a tar file.
 #
 # It first stops the running containers, and relaunch them (and only the ones that were running).
 #
@@ -18,8 +20,10 @@
 # ====== Init ======
 date_prefix=$(date +'%Y-%m-%d_%H:%M')
 
-[[ -d backups/ ]] || mkdir backups/
-[[ -d backups/tmp/ ]] || mkdir backups/tmp/
+BACKUP_FOLDER="backups/self"
+
+[[ -d "$BACKUP_FOLDER" ]] || mkdir -p "$BACKUP_FOLDER"
+[[ -d "$BACKUP_FOLDER"/tmp/ ]] || mkdir "$BACKUP_FOLDER"/tmp/
 
 # ====== Utils ======
 # ------ delete_firsts ------
@@ -78,7 +82,7 @@ backup_volumes() {
 
     #---Tar
     echo "--------------------------- Archiving ./volumes (you might need to enter sudo password)"
-    sudo tar -czf backups/tmp/"$date_prefix"_volumes.tar.gz volumes/
+    sudo tar -czf "$BACKUP_FOLDER"/tmp/"$date_prefix"_volumes.tar.gz volumes/
 
     #---Docker compose up
     echo
@@ -107,7 +111,7 @@ backup_env() {
     echo "====== ./composes/**/.env ======"
     echo
 
-    tar -czf backups/tmp/"$date_prefix"_env.tar.gz composes/**/.env
+    tar -czf "$BACKUP_FOLDER"/tmp/"$date_prefix"_env.tar.gz composes/**/.env
 }
 
 # ------ /home/admin ------
@@ -116,7 +120,7 @@ backup_home() {
     echo "====== /home/admin ======"
     echo
 
-    tar -czf backups/tmp/"$date_prefix"_home.tar.gz /home/admin
+    tar -czf "$BACKUP_FOLDER"/tmp/"$date_prefix"_home.tar.gz /home/admin
 }
 
 # ====== Main ======
@@ -126,13 +130,13 @@ backup_home
 backup_volumes
 
 # Aggregate all tar in a single one
-tar -cf backups/"$date_prefix"_backup_all.tar backups/tmp/"$date_prefix"*.tar.gz
-rm backups/tmp/"$date_prefix"*.tar.gz
-rm -d backups/tmp/
+tar -cf "$BACKUP_FOLDER"/"$date_prefix"_backup_all.tar "$BACKUP_FOLDER"/tmp/"$date_prefix"*.tar.gz
+rm "$BACKUP_FOLDER"/tmp/"$date_prefix"*.tar.gz
+rm -d "$BACKUP_FOLDER"/tmp/
 
 # ------ Keep only last 5 backups (remove all the previous ones) ------ 
 echo "------ Deleting old backups (if applicable, keep last 5) ------"
-delete_firsts 'backups/' '5'
+delete_firsts "$BACKUP_FOLDER"/ '5'
 
 # ------ Send backups to homelab ------ 
 if [ -f "scripts/.backup_secrets.sh" ]; then
@@ -143,7 +147,7 @@ if [ -f "scripts/.backup_secrets.sh" ]; then
     curl \
         -X POST \
         -H "Authorization: $BACKUP_TOKEN" \
-        -F "file=@backups/"$date_prefix"_backup_all.tar" \
+        -F "file=@$BACKUP_FOLDER/"$date_prefix"_backup_all.tar" \
         $BACKUP_URL
 fi
 

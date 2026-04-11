@@ -21,7 +21,7 @@ services:
       max_file_size_GB: ${max_file_size_GB}
 
     volumes:
-      - /srv/docker/backups_uploaded:/app/uploads
+      - /srv/docker/backups/remote:/app/uploads
 
 networks:
   docker-network:

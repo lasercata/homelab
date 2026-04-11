@@ -14,8 +14,8 @@ Update the important values:
 
 Create and chown the folder that will contain backups:
 ```
-mkdir /srv/docker/backups_uploaded/
-chown 10001:10001 /srv/docker/backups_uploaded/
+mkdir -p /srv/docker/backups/remote/
+chown 10001:10001 /srv/docker/backups/remote/
 ```
 
 In the domain manager, add a line:
