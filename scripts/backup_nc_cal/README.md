@@ -14,5 +14,7 @@ For `USER` and `PASSWORD`, you will need to go to the *security* tab in user nex
 Use a cron job (every four hours):
 ```
 # mm hh   DD MM W  Program
-  0  */4  *  *  *  cd /srv/docker; ./scripts/backup_nc_cal/backup_calendars.sh | discorder "backup_cal" "# Backup calendars $(date +'%Y-%m-%d %H:%M:%S')"
+  0  */4  *  *  *  cd /srv/docker; ./scripts/backup_nc_cal/backup_calendars.sh 2>&1 | discorder "backup_cal" "# Backup calendars $(date +'\%Y-\%m-\%d \%H:\%M:\%S')"
 ```
+
+Note: you have to use `\%` instead of just `%` with the `date` command (it is passed through `sh -c`).
