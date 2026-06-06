@@ -25,6 +25,9 @@ services:
       - /srv/docker/volumes/cryptpad/data/data:/cryptpad/data
       - /srv/docker/volumes/cryptpad/data/files:/cryptpad/datastore
 
+      - /srv/docker/volumes/cryptpad/onlyoffice/dist:/cryptpad/www/common/onlyoffice/dist
+      - /srv/docker/volumes/cryptpad/onlyoffice/conf:/cryptpad/onlyoffice-conf
+
 networks:
   docker-network:
     external: true
