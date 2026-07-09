@@ -11,7 +11,7 @@ DATE=$(date)
 
 # Notify only on session open, not close
 if [ "$PAM_TYPE" = "open_session" ]; then
-    MESSAGE="SSH login detected on \`$HOSTNAME\`
+    MESSAGE="SSH login detected on \`${HOSTNAME:- }\`
     Date: **$DATE**
     User: \`$USER\`
     IP: \`$IP\`"
