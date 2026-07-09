@@ -38,14 +38,20 @@ if [ ! -t 0 ]; then
     # Read the piped data
     msg_pipe=$(cat)
 
-    # Save it to tmp file
-    cat <<< "$msg_pipe" > /tmp/discorder.txt
+    # Test if piped message is not empty
+    if [ -z "$msg_pipe" ]; then
+        post_message "$bot_name" "$msg"
 
-    # post message
-    post_message "$bot_name" "$msg" "/tmp/discorder.txt"
+    else
+        # Save it to tmp file
+        cat <<< "$msg_pipe" > /tmp/discorder.txt
 
-    # Delete tmp file
-    rm /tmp/discorder.txt
+        # post message
+        post_message "$bot_name" "$msg" "/tmp/discorder.txt"
+
+        # Delete tmp file
+        rm /tmp/discorder.txt
+    fi
 
 else
     post_message "$bot_name" "$msg"
