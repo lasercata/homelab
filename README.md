@@ -209,7 +209,11 @@ $ sudo crontab -e
 # Or, with discorder:
 # 30 3 * * * cd /srv/docker && ./backup.sh 2>&1 | discorder "backup_cron" "# Backup $(date +'%Y-%m-%d')"
 
-# And to see the size:
+# And to see the size of the volumes:
+# 0 6 * * *  cd /srv/docker/volumes/; discorder "size_cron" "## Volumes size $(printf '\n ') \`\`\`$(du -hs * | sort -h)\`\`\`"
+
+# And to see the size (no sudo needed):
+$ crontab -e
 # 0  6  *  *  *  cd /srv/docker/backups/self; nl=$'\n'; discorder "backup_cron" "## Backups size ${nl} \`\`\`$(du -hs *)\`\`\`"
 # 0  6  *  *  *  cd /srv/docker/backups/remote; nl=$'\n'; discorder "backup_cron" "## Backups uploaded size ${nl} \`\`\`$(du -hs *)\`\`\`"
 ```
