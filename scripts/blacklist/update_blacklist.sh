@@ -33,7 +33,7 @@ done
 # Adding the rule into iptables, into the chain 'DOCKER-USER', because
 # Docker apparently creates a jump from the FORWARD to DOCKER-USER, that
 # is used for all container-based traffic
-echo "Adding the iptable rule (DOCKER-USER)"
+echo "Adding the iptable rule (DOCKER-USER), if not already in"
 ! sudo iptables -C DOCKER-USER -m set --match-set blacklist src -j DROP 2>/dev/null && \
 sudo iptables -I DOCKER-USER -m set --match-set blacklist src -j DROP
 
@@ -42,7 +42,7 @@ sudo iptables -I DOCKER-USER -m set --match-set blacklist src -j DROP
 # sudo iptables -I DOCKER-USER -m set --match-set blacklist src -j LOG --log-prefix "iptables: BLACKLIST: docker-user" --log-level 7
 
 # Also adding the rule to INPUT (just in case)
-echo "Adding the iptable rule (INPUT)"
+echo "Adding the iptable rule (INPUT), if not already in"
 ! sudo iptables -C INPUT -m set --match-set blacklist src -j DROP 2>/dev/null && \
 sudo iptables -I INPUT -m set --match-set blacklist src -j DROP
 
@@ -50,3 +50,5 @@ sudo iptables -I INPUT -m set --match-set blacklist src -j DROP
 # ! sudo iptables -C INPUT -m set --match-set blacklist src -j LOG --log-prefix "iptables: BLACKLIST: input" --log-level 7 2> /dev/null && \
 # sudo iptables -I INPUT -m set --match-set blacklist src -j LOG --log-prefix "iptables: BLACKLIST: input" --log-level 7
 
+# This echo is important to return code 0 at the end, event if above commands didn't (because the rules already existed)
+echo "Finished"
