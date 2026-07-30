@@ -1,6 +1,6 @@
 services:
   drawio:
-    image: jgraph/drawio
+    image: jgraph/drawio:latest
     restart: unless-stopped
     container_name: drawio
 
@@ -8,13 +8,36 @@ services:
     #   - 8080:8080
     #   - 8443:8443
 
+    environment:
+      DRAWIO_SELF_CONTAINED: "1"
+      EXPORT_URL: "http://drawio-export:8000"
+      PLANTUML_URL: "http://drawio-plantuml:8080"
+      DRAWIO_BASE_URL: ${DRAWIO_BASE_URL}
+
     networks:
       - docker-network
+      - drawio-network
 
-    # environment:
-    #   PUBLIC_DNS: ${PUBLIC_DNS}
+  drawio-export:
+    image: jgraph/export-server:latest
+    restart: unless-stopped
+    container_name: drawio-image-export
+
+    networks:
+      - drawio-network
+
+  drawio-plantuml:
+    image: jgraph/plantuml-server:latest
+    restart: unless-stopped
+    container_name: drawio-plantuml
+
+    networks:
+      - drawio-network
 
 networks:
   docker-network:
     external: true
+
+  drawio-network:
+    internal: true
 

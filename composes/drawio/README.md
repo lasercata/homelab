@@ -2,6 +2,13 @@
 [Draw.io](https://github.com/jgraph/drawio) is a diagramming and whiteboarding application
 
 ## Setup
+Create the `.env` from the example:
+```
+cp .env.default .env
+```
+
+Update the values.
+
 In the domain manager, add a line:
 
 | Sub-domain | TTL  | Type | Value        |
