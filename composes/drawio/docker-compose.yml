@@ -1,6 +1,6 @@
 services:
   drawio:
-    image: jdraph/drawio
+    image: jgraph/drawio
     restart: unless-stopped
     container_name: drawio
 
