@@ -23,6 +23,9 @@ services:
     restart: unless-stopped
     container_name: drawio-export
 
+    environment:
+      DRAWIO_BASE_URL: "http://drawio:8080"
+
     networks:
       - drawio-network
 
