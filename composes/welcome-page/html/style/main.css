@@ -131,7 +131,7 @@ body {
     color: #888;
 }
 
-@media (max-width: 1120px) {
+@media (max-width: 1300px) {
     .services-boxes-container {
         display: flex;
         flex-direction: column;
