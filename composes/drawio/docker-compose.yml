@@ -1,0 +1,20 @@
+services:
+  drawio:
+    image: jdraph/drawio
+    restart: unless-stopped
+    container_name: drawio
+
+    # ports:
+    #   - 8080:8080
+    #   - 8443:8443
+
+    networks:
+      - docker-network
+
+    # environment:
+    #   PUBLIC_DNS: ${PUBLIC_DNS}
+
+networks:
+  docker-network:
+    external: true
+
