@@ -21,7 +21,7 @@ services:
   drawio-export:
     image: jgraph/export-server:latest
     restart: unless-stopped
-    container_name: drawio-image-export
+    container_name: drawio-export
 
     networks:
       - drawio-network
