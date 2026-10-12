@@ -10,7 +10,7 @@ services:
     networks:
       - docker-network
 
-    environnement:
+    environment:
       - TZ=UTC
 
     volumes:
