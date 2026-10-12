@@ -1,0 +1,21 @@
+services:
+  uptime-kuma:
+    image: louislam/uptime-kuma:latest
+    restart: unless-stopped
+    container_name: uptime-kuma
+
+    # ports:
+    #   - "3001:3001"
+
+    networks:
+      - docker-network
+
+    environnement:
+      - TZ=UTC
+
+    volumes:
+      - /srv/docker/volumes/uptime-kuma/data:/app/data
+
+networks:
+  docker-network:
+    external: true
