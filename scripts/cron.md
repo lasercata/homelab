@@ -13,7 +13,7 @@ $ sudo crontab -l
 # mm hh DD MM W  Program
   0  3  *  *  *  cd /srv/docker/scripts/blacklist/ && ./update_blacklist.sh && discorder "update_blacklist" "Blacklist update finished"
   30 3  *  *  *  cd /srv/docker/ && ./backup.sh 2>&1 | discorder "backup_cron" "# Backup $(date +'\%Y-\%m-\%d')"
-  15 3  *  *  *  cd /srv/docker/volumes/; discorder "size_cron" "## Volumes size $(printf '\n ') \`\`\`$(du -hs * | sort -h)\`\`\`"
+  16 3  *  *  *  cd /srv/docker/volumes/; discorder "size_cron" "## Volumes size $(printf '\n ') \`\`\`$(du -hs * | sort -h)\`\`\`"
 ```
 
 ## Serv
@@ -22,10 +22,11 @@ $ crontab -l
 # mm hh   DD MM W  Program
   0  */4  *  *  *  cd /srv/docker; ./scripts/backup_nc_cal/backup_calendars.sh 2>&1 | discorder "backup_cal" "# Backup calendars $(date +'\%Y-\%m-\%d \%H:\%M:\%S')"
   0  6    *  *  *  cd /srv/docker/backups/self; nl=$'\n'; discorder "backup_cron" "## Backups size ${nl} \`\`\`$(du -hs *)\`\`\`"
-  0  6    *  *  *  cd /srv/docker/backups/remote; nl=$'\n'; discorder "backup_cron" "## Backups uploaded size ${nl} \`\`\`$(du -hs *)\`\`\`"
-  0  6    *  *  *  nl=$'\n'; discorder "disk_usage" "## Disk usage ${nl} \`\`\`$(df -h | grep -e File -e /dev/mapper)\`\`\`"
+  1  6    *  *  *  cd /srv/docker/backups/remote; nl=$'\n'; discorder "backup_cron" "## Backups uploaded size ${nl} \`\`\`$(du -hs *)\`\`\`"
+  2  6    *  *  *  nl=$'\n'; discorder "disk_usage" "## Disk usage ${nl} \`\`\`$(df -h | grep -e File -e /dev/mapper)\`\`\`"
 
 $ sudo crontab -l
 # mm hh DD MM W  Program
   30 3  *  *  *  cd /srv/docker/ && ./backup.sh 2>&1 | discorder "backup_cron" "# Backup $(date +'\%Y-\%m-\%d')"
+  3  6  *  *  *  cd /srv/docker/volumes/; nl=$'\n'; discorder "disk_usage" "## Volumes size ${nl} \`\`\`$(du -hs * | sort -h)\`\`\`"
 ```
