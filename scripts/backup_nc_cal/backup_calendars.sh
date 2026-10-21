@@ -64,6 +64,11 @@ curl \
         fi
     done;
 
+if [ ${PIPESTATUS[0]} -ne 0 ]; then
+    echo "curl failed, aborting"
+    exit
+fi
+
 echo "------ Creating the tar.gz archive... ------"
 tar -czf "${BACKUP_FOLDER}/${date_prefix}_calendars.tar.gz" "${BACKUP_FOLDER}/${date_prefix}"
 
