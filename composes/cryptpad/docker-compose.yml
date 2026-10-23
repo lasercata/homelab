@@ -14,9 +14,16 @@ services:
     environment:
       - USER_UID=4001
       - USER_GID=4001
+
       - CPAD_MAIN_DOMAIN=https://cryptpad.lasercata.com
       - CPAD_SANDBOX_DOMAIN=https://sandbox.cryptpad.lasercata.com
-      - CPAD_CONF=/cryptpad/config/config.js
+      # - CPAD_CONF=/cryptpad/config/config.js
+
+      # Check out the following README:
+      # https://github.com/cryptpad/cryptpad/tree/main/www/common/onlyoffice/README.md
+      # Read and accept the license before uncommenting the following line:
+      # https://github.com/Euro-Office/web-apps/raw/refs/heads/main/LICENSE.txt
+      - CPAD_INSTALL_OFFICE=yes
 
     volumes:
       - /srv/docker/volumes/cryptpad/data/blob:/cryptpad/blob
@@ -24,6 +31,7 @@ services:
       - /srv/docker/volumes/cryptpad/customize:/cryptpad/customize
       - /srv/docker/volumes/cryptpad/data/data:/cryptpad/data
       - /srv/docker/volumes/cryptpad/data/files:/cryptpad/datastore
+      - /srv/docker/volumes/cryptpad/config:/cryptpad/config
 
       - /srv/docker/volumes/cryptpad/onlyoffice/dist:/cryptpad/www/common/onlyoffice/dist
       - /srv/docker/volumes/cryptpad/onlyoffice/conf:/cryptpad/onlyoffice-conf
