@@ -19,7 +19,7 @@ In the nginx proxy manager, add a *proxy host*:
 ```
 Domain name: umami.domain.tld
 Scheme: http
-Forward Hostname / IP: translite
+Forward Hostname / IP: umami
 Forward Port: 3000
 SSL Certificate (SSL tab): request a new certificate
 ```
