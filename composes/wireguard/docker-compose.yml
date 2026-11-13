@@ -24,7 +24,7 @@ services:
 
     volumes:
       - /srv/docker/volumes/wireguard/etc_wireguard:/etc/wireguard
-      - /srv/docker/volumes/wireguard/lib/modules:/lib/modules:ro
+      - /lib/modules:/lib/modules:ro
 
     cap_add:
       - NET_ADMIN
