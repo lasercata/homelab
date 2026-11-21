@@ -1,14 +1,17 @@
 services:
   welcome-page:
-    image: httpd:latest
     restart: unless-stopped
     container_name: welcome-page
 
+    build:
+      context: ./lasercata_website/
+      dockerfile: Dockerfile
+
+    expose:
+      - 80
+
     networks:
       - docker-network
-
-    volumes:
-      - ./html:/usr/local/apache2/htdocs/
 
 networks:
   docker-network:

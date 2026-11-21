@@ -1,3 +1,6 @@
 [submodule "composes/backup_uploader/backup_upload_server"]
 	path = composes/backup-upload-server/backup_upload_server
 	url = https://git.lasercata.com/lasercata/backup_upload_server.git
+[submodule "composes/welcome-page/lasercata_website"]
+	path = composes/welcome-page/lasercata_website
+	url = https://git.lasercata.com/lasercata/lasercata_website.git
