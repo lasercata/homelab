@@ -13,4 +13,21 @@ Forward Port: 80
 SSL Certificate (SSL tab): request a new certificate
 ```
 
+## Update
+To update the running web page, after new commits were added to the remote of the submodule `lasercata_website`, update first this repo:
+```bash
+# Pull the repo and its (nested) submodules
+cd lasercata_website/
+git pull --recurse-submodules
+cd ../
+```
 
+Then on the server, pull this repo with
+```
+git pull --recurse-submodules
+```
+
+And finally restart the compose and rebuild it:
+```
+docker compose up --build -d
+```
