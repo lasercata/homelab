@@ -20,14 +20,18 @@ To update the running web page, after new commits were added to the remote of th
 cd lasercata_website/
 git pull --recurse-submodules
 cd ../
+
+# Commit changes
+git add lasercata_website/
+git commit -m "welcome-page: updated site (...)"
 ```
 
 Then on the server, pull this repo with
-```
+```bash
 git pull --recurse-submodules
 ```
 
 And finally restart the compose and rebuild it:
-```
+```bash
 docker compose up --build -d
 ```
